@@ -10,6 +10,7 @@ import Profile from './Components/Profile';
 import Category from './Components/Category';
 import AddCategory from './Components/AddCategory';
 import AddVeterinarian from './Components/AddVeterinarian';
+import EditVeterinarian from './Components/EditVeterinarian';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <Route path='/dashboard/profile' element={<Profile/>}></Route>
           <Route path='/dashboard/add-category' element={<AddCategory/>}></Route>
           <Route path='/dashboard/add-veterinarian' element={<AddVeterinarian/>}></Route>
+          <Route path='/dashboard/edit-veterinarian/:id' element={<EditVeterinarian/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
