@@ -15,11 +15,11 @@ const Category = () => {
     }).catch(err => console.log(err))
   },[])
   return (
-    <div className='px-5 mt-3'>
-      <div className='d-flex justify-content-center'>
+    <div className='px-5 my-4 mx-2'>
+      <div className='d-flex justify-content-between align-items-center'>
         <h3>Category List</h3>
+        <Link to="/dashboard/add-category" className='btn btn-success'>Add Category</Link>
       </div>
-      <Link to="/dashboard/add-category" className='btn btn-success'>Add Category</Link>
       <div className='mt-3'>
         <table className='table'>
           <thead>
