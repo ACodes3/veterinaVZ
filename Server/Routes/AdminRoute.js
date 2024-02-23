@@ -120,4 +120,28 @@ router.delete("/delete-veterinarian/:id", (req,res) => {
     })
 })
 
+router.get("/admin-count", (req,res) => {
+    const sql = "SELECT count(id) as admin from admin";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.get("/veterinarians-count", (req,res) => {
+    const sql = "SELECT count(id) as veterinarian from veterinarian";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.get("/admin-records", (req,res) => {
+    const sql = "SELECT * from admin";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
 export { router as adminRouter }
