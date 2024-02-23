@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from "axios";
+import { FaCircle } from "react-icons/fa";
 
 const Veterinarians = () => {
-  const navigate = useNavigate();
   const [veterinarian, setVeterinarian] = useState([])
   useEffect(() => {
     axios.get("http://localhost:3000/auth/veterinarians")
@@ -44,6 +44,7 @@ const Veterinarians = () => {
               <th>Salary</th>
               <th>Address</th>
               <th>Action</th>
+              <th>Availability</th>
             </tr>
           </thead>
           <tbody>
@@ -59,6 +60,7 @@ const Veterinarians = () => {
                     <Link to={`/dashboard/edit-veterinarian/` + vets.id} className='btn btn-success btn-sm me-2'>Edit</Link>
                     <button className='btn btn-danger btn-sm' onClick={() => handleDelete(vets.id)}>Delete</button>
                   </td>
+                  <td><FaCircle color="green" /> Available</td>
                 </tr>
               ))
             }

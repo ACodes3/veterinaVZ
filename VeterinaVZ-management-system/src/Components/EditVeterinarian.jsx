@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -119,6 +119,7 @@ const EditVeterinarian = () => {
               name="VetType"
               id="vettype"
               className="form-select"
+              value={veterinarian.specialization_id}
               onChange={(e) => setVeterinarian({...veterinarian, specialization_id: e.target.value})}
             >
                 {specialization.map(c => {
