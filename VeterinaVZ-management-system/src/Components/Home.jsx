@@ -90,13 +90,23 @@ const Home = () => {
       <hr className="mx-4" />
       <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
         <h3>Vaccinations</h3>
-        <DateRangePicker />
+        <div className="d-flex align-items-center">
+          <DateRangePicker />
+          <Link to="/dashboard" className="btn btn-light">
+            Book Appointment
+          </Link>
+        </div>
       </div>
       <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
         <h3>Appointments</h3>
-        <DateRangePicker />
+        <div className="d-flex align-items-center">
+          <DateRangePicker />
+          <Link to="/dashboard" className="btn btn-light">
+            Book Appointment
+          </Link>
+        </div>
       </div>
-      <div className="mt-4 px-5 pt-3">
+      <div className="my-4 px-5 pt-3">
         <div className="d-flex justify-content-between align-items-center">
           <h3>List of Admins</h3>
           <Link to="/dashboard" className="btn btn-success">

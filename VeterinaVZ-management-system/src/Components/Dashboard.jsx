@@ -1,6 +1,7 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
+import Footer from "./Footer/Footer";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -118,6 +119,7 @@ const Dashboard = () => {
           <Outlet />
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
