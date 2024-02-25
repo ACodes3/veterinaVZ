@@ -36,6 +36,14 @@ router.get('/vet-types', (req, res) => {
     })
 })
 
+router.get('/vaccination-types', (req, res) => {
+    const sql = "SELECT * FROM vaccinationtype";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
 router.post('/add-category', (req, res) => {
     const sql = "INSERT INTO category (`name`) VALUES (?)"
     con.query(sql, [req.body.category], (err, result) => {
@@ -114,6 +122,76 @@ router.put("/edit-veterinarian/:id", (req, res) => {
 router.delete("/delete-veterinarian/:id", (req,res) => {
     const id = req.params.id;
     const sql = "DELETE FROM veterinarian where id = ?"
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.post("/add-pet", upload.single("image"), (req, res) => {
+    const sql = "INSERT INTO pets (pet_owner_id, pet_nickname, pet_nb_chip, pet_type, pet_breed, pet_gender, pet_birth_date, pet_height, pet_weight, pet_vaccinated, image) VALUES (?)";
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        const values = [
+            req.body.pet_owner_id,
+            req.body.pet_nickname,
+            req.body.pet_nb_chip,
+            req.body.pet_type,
+            req.body.pet_breed,
+            req.body.pet_gender,
+            req.body.pet_birth_date,
+            req.body.pet_height,
+            req.body.pet_weight,
+            req.body.pet_vaccinated,
+            req.file.filename,
+        ]
+        con.query(sql, [values], (err, result) => {
+            if (err) return res.json({ Status: false, Error: err })
+            return res.json({ Status: true })
+        })
+    })
+})
+
+router.get('/pets', (req, res) => {
+    const sql = "SELECT * FROM pets";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.get("/pet/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM pets WHERE id = ?";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.put("/edit-pet/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE pets set pet_nickname = ?, pet_nb_chip = ?, pet_type = ?, pet_breed = ?, pet_gender = ?, pet_birth_date = ?, pet_height = ?, pet_weight = ?, pet_vaccinated = ? Where id = ?`
+    const values = [
+            req.body.pet_nickname,
+            req.body.pet_nb_chip,
+            req.body.pet_type,
+            req.body.pet_breed,
+            req.body.pet_gender,
+            req.body.pet_birth_date,
+            req.body.pet_height,
+            req.body.pet_weight,
+            req.body.pet_vaccinated,
+    ]
+    con.query(sql, [...values, id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.delete("/delete-pet/:id", (req,res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM pet where id = ?"
     con.query(sql, [id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
