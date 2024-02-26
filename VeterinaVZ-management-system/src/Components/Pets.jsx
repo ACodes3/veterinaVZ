@@ -70,8 +70,11 @@ const Pets = () => {
                     Edit
                   </button>
                   <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(pets.id);
+                    }}
                     className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(pets.id)}
                   >
                     Delete
                   </button>
