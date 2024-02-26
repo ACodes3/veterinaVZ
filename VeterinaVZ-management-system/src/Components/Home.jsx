@@ -15,6 +15,8 @@ const Home = () => {
     adminCount();
     veterinariansCount();
     AdminRecords();
+    petOwnersCount();
+    petsCount();
   }, []);
 
   const AdminRecords = () => {
@@ -39,6 +41,26 @@ const Home = () => {
       .then((result) => {
         if (result.data.Status) {
           setVeterinariansTotal(result.data.Result[0].veterinarian);
+        }
+      });
+  };
+
+  const petsCount = () => {
+    axios
+      .get("http://localhost:3000/auth/pets-count")
+      .then((result) => {
+        if (result.data.Status) {
+          setPetsTotal(result.data.Result[0].pets);
+        }
+      });
+  };
+
+  const petOwnersCount = () => {
+    axios
+      .get("http://localhost:3000/auth/pet-owners-count")
+      .then((result) => {
+        if (result.data.Status) {
+          setPetOwnersTotal(result.data.Result[0].petowners);
         }
       });
   };
@@ -73,7 +95,7 @@ const Home = () => {
           <hr />
           <div className="d-flex justify-content-between">
             <h5>Total:</h5>
-            <h5>TODO</h5>
+            <h5>{petOwnersTotal}</h5>
           </div>
         </div>
         <div className="px-3 mx-4 pt-2 pb-3 border shadow-sm w-25">
@@ -83,7 +105,7 @@ const Home = () => {
           <hr />
           <div className="d-flex justify-content-between">
             <h5>Total:</h5>
-            <h5>TODO</h5>
+            <h5>{petsTotal}</h5>
           </div>
         </div>
       </div>

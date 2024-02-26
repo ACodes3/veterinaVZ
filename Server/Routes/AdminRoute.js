@@ -284,6 +284,22 @@ router.get("/veterinarians-count", (req, res) => {
     })
 })
 
+router.get("/pets-count", (req, res) => {
+    const sql = "SELECT count(id) as pets from pets";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.get("/pet-owners-count", (req, res) => {
+    const sql = "SELECT count(pet_owner_id) as petowners from petowners";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
 router.get("/admin-records", (req, res) => {
     const sql = "SELECT * from admin";
     con.query(sql, (err, result) => {
