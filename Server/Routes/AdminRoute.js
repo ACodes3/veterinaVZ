@@ -67,7 +67,7 @@ const upload = multer({
 //end image upload
 
 router.post("/add-veterinarian", upload.single("image"), (req, res) => {
-    const sql = "INSERT INTO veterinarian (name, email, password, salary, address, image, specialization_id) VALUES (?)";
+    const sql = "INSERT INTO veterinarian (name, email, password, salary, address, image, specialization_id, category_id) VALUES (?)";
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         const values = [
@@ -78,6 +78,7 @@ router.post("/add-veterinarian", upload.single("image"), (req, res) => {
             req.body.address,
             req.file.filename,
             req.body.specialization_id,
+            req.body.category_id,
         ]
         con.query(sql, [values], (err, result) => {
             if (err) return res.json({ Status: false, Error: err })

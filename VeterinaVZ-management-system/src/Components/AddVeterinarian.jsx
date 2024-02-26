@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AddVeterinarian = () => {
     const navigate = useNavigate();
     const [specialization, setSpecialization] = useState([]);
+    const [category, setCategory] = useState([]);
     const [veterinarian, setVeterinarian] = useState({
         name: "",
         email: "",
@@ -12,6 +13,7 @@ const AddVeterinarian = () => {
         salary: "",
         address: "",
         specialization_id: "",
+        category_id: "",
         image: "",
       });
   useEffect(()=>{
@@ -19,6 +21,17 @@ const AddVeterinarian = () => {
     .then(result => {
       if(result.data.Status) {
         setSpecialization(result.data.Result);
+    } else {
+        alert(result.data.Error)
+    }
+    }).catch(err => console.log(err))
+  },[])
+
+  useEffect(()=>{
+    axios.get("http://localhost:3000/auth/categories")
+    .then(result => {
+      if(result.data.Status) {
+        setCategory(result.data.Result);
     } else {
         alert(result.data.Error)
     }
@@ -34,6 +47,7 @@ const AddVeterinarian = () => {
     formData.append("salary", veterinarian.salary);
     formData.append("address", veterinarian.address);
     formData.append("specialization_id", veterinarian.specialization_id);
+    formData.append("category_id", veterinarian.category_id);
     formData.append("image", veterinarian.image);
 
     axios.post("http://localhost:3000/auth/add-veterinarian", formData)
@@ -42,6 +56,7 @@ const AddVeterinarian = () => {
         navigate("/dashboard/veterinarians")
       } else {
         alert(result.data.Error)
+        console.log(result.data.Error)
       }
     })
     .catch(err => console.log(err))
@@ -126,6 +141,21 @@ const AddVeterinarian = () => {
             >
                 {specialization.map(vet => {
                     return <option key={vet.id} value={vet.id}>{vet.name}</option>;
+                })}
+            </select>
+          </div>
+          <div className="col-12">
+            <label htmlFor="category" className="form-label">
+              Select Category
+            </label>
+            <select
+              name="Category"
+              id="category"
+              className="form-select"
+              onChange={(e) => setVeterinarian({...veterinarian, category_id: e.target.value})}
+            >
+                {category.map(cat => {
+                    return <option key={cat.id} value={cat.id}>{cat.name}</option>;
                 })}
             </select>
           </div>
