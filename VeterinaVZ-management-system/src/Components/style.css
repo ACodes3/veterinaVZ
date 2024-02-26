@@ -17,3 +17,10 @@
     border-radius: 50%;
 }
 
+.transparent-select {
+    background-color: transparent; /* Set background color to transparent */
+    border: none; /* Remove border */
+    -webkit-appearance: none; /* Hide default arrow for webkit browsers */
+    -moz-appearance: none; /* Hide default arrow for Firefox */
+    appearance: none; /* Hide default arrow */
+  }
