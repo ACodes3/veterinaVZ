@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaCircle } from "react-icons/fa";
+import { FaUserDoctor } from "react-icons/fa6";
 
 const Veterinarians = () => {
   const [veterinarian, setVeterinarian] = useState([]);
@@ -38,52 +39,62 @@ const Veterinarians = () => {
         </Link>
       </div>
       <div className="mt-3">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Image</th>
-              <th>Email</th>
-              <th>Salary</th>
-              <th>Address</th>
-              <th>Action</th>
-              <th>Availability</th>
-            </tr>
-          </thead>
-          <tbody>
-            {veterinarian.map((vets) => (
-              <tr key={vets}>
-                <td>{vets.name}</td>
-                <td>
-                  <img
-                    src={`http://localhost:3000/images/` + vets.image}
-                    className="vet-image"
-                  />
-                </td>
-                <td>{vets.email}</td>
-                <td>{vets.salary}</td>
-                <td>{vets.address}</td>
-                <td>
-                  <Link
-                    to={`/dashboard/edit-veterinarian/` + vets.id}
-                    className="btn btn-success btn-sm me-2"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(vets.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-                <td>
-                  <FaCircle color="green" /> Available
-                </td>
+        {veterinarian.length === 0 ? (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th></th>
+                <th></th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <tr>
+                <td><FaUserDoctor /> No Veterinarian Found</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Action</th>
+                <th>Availability</th>
+              </tr>
+            </thead>
+            <tbody>
+              {veterinarian.map((vets) => (
+                <tr key={vets.id}>
+                  <td>{vets.name}</td>
+                  <td>{vets.email}</td>
+                  <td>
+                    <Link
+                      to={`/dashboard/edit-veterinarian/` + vets.id}
+                      className="btn btn-success btn-sm me-2"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDelete(vets.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <FaCircle color="green" /> Available
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

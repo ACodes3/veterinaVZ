@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from "axios"
+import { BiSolidCategory } from "react-icons/bi";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
@@ -20,23 +21,36 @@ const Category = () => {
         <h3>Category List</h3>
         <Link to="/dashboard/add-category" className='btn btn-success'>Add Category</Link>
       </div>
-      <div className='mt-3'>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              category.map(c => (
-                <tr key={c}>
+      <div className="mt-3">
+        {category.length === 0 ? (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><BiSolidCategory /> No Category Found</td>
+              </tr>
+            </tbody>
+          </table>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {category.map((c) => (
+                <tr key={c.id}>
                   <td>{c.name}</td>
                 </tr>
-              ))
-            }
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   )

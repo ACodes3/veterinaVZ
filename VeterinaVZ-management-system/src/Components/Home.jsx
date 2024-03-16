@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaCircle } from "react-icons/fa";
 import DateRangePicker from "./DatePicker/DateRangePicker";
+import { FaCalendarAlt } from "react-icons/fa";
+import { RiAdminFill } from "react-icons/ri";
 
 const Home = () => {
   const [adminTotal, setAdminTotal] = useState();
@@ -75,7 +77,7 @@ const Home = () => {
           <hr />
           <div className="d-flex justify-content-between">
             <h5>Total:</h5>
-            <h5>{adminTotal}</h5>
+            <h5>{adminTotal ? adminTotal : 0}</h5>
           </div>
         </div>
         <div className="px-3 mx-4 pt-2 pb-3 border shadow-sm w-25">
@@ -85,7 +87,7 @@ const Home = () => {
           <hr />
           <div className="d-flex justify-content-between">
             <h5>Total:</h5>
-            <h5>{veterinariansTotal}</h5>
+            <h5>{veterinariansTotal? veterinariansTotal : 0}</h5>
           </div>
         </div>
         <div className="px-3 mx-4 pt-2 pb-3 border shadow-sm w-25">
@@ -95,7 +97,7 @@ const Home = () => {
           <hr />
           <div className="d-flex justify-content-between">
             <h5>Total:</h5>
-            <h5>{petOwnersTotal}</h5>
+            <h5>{petOwnersTotal ? petOwnersTotal : 0}</h5>
           </div>
         </div>
         <div className="px-3 mx-4 pt-2 pb-3 border shadow-sm w-25">
@@ -105,27 +107,53 @@ const Home = () => {
           <hr />
           <div className="d-flex justify-content-between">
             <h5>Total:</h5>
-            <h5>{petsTotal}</h5>
+            <h5>{petsTotal ? petsTotal : 0}</h5>
           </div>
         </div>
       </div>
       <hr className="mx-4" />
-      <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
-        <h3>Vaccinations</h3>
-        <div className="d-flex align-items-center">
-          <DateRangePicker />
-          <Link to="/dashboard" className="btn btn-light">
-            Book Appointment
-          </Link>
+      <div>
+        <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
+          <h3>Vaccinations</h3>
+          <div className="d-flex align-items-center">
+            <DateRangePicker />
+            <Link to="/dashboard" className="btn btn-light">
+              Book Appointment
+            </Link>
+          </div>
+        </div>
+        <div className="px-5">
+          <table className="table">
+            <thead>
+            </thead>
+            <tbody>
+              <tr>
+                <td> <FaCalendarAlt /> No appointments selected. Please select a date.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
-        <h3>Appointments</h3>
-        <div className="d-flex align-items-center">
-          <DateRangePicker />
-          <Link to="/dashboard" className="btn btn-light">
-            Book Appointment
-          </Link>
+      <div>
+        <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
+          <h3>Appointments</h3>
+          <div className="d-flex align-items-center">
+            <DateRangePicker />
+            <Link to="/dashboard" className="btn btn-light">
+              Book Appointment
+            </Link>
+          </div>
+        </div>
+        <div className="px-5">
+          <table className="table">
+            <thead>
+            </thead>
+            <tbody>
+              <tr>
+                <td> <FaCalendarAlt /> No appointments selected. Please select a date.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div className="my-4 px-5 pt-3">
@@ -135,29 +163,48 @@ const Home = () => {
             Add Admin
           </Link>
         </div>
-        <table className="table">
+        <div className="mt-3">
+        {admins.length === 0 ? (
+          <table className="table">
           <thead>
             <tr>
-              <th>Email</th>
-              <th>Availability</th>
-              <th>Action</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            {admins.map((admin) => (
-              <tr key={admin}>
-                <td>{admin.email}</td>
+              <tr>
                 <td>
-                  <FaCircle color="green" /> Available
-                </td>
-                <td>
-                  <button className="btn btn-success btn-sm me-2">Edit</button>
-                  <button className="btn btn-danger btn-sm">Delete</button>
+                  <RiAdminFill /> No Admin Found
                 </td>
               </tr>
-            ))}
           </tbody>
         </table>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Availability</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {admins.map((admin) => (
+                <tr key={admin.id}>
+                  <td>{admin.email}</td>
+                  <td>
+                    <FaCircle color="green" /> Available
+                  </td>
+                  <td>
+                    <button className="btn btn-success btn-sm me-2">Edit</button>
+                    <button className="btn btn-danger btn-sm">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
       </div>
     </div>
   );
