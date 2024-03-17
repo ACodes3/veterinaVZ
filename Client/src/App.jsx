@@ -15,15 +15,19 @@ import Pets from './Components/Pets';
 import AddPet from './Components/AddPet';
 import Pet from './Components/Pet';
 import EditPet from './Components/EditPet';
+import Appointments from "./Components/Appointments/Appointments";
+import VaccinationAppointments from './Components/Appointments/VaccinationAppointments';
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/adminlogin" element={<Login/>}></Route>
+        <Route path="/admin-login" element={<Login/>}></Route>
         <Route path="/dashboard" element={<Dashboard/>}>
           <Route path='' element={<Home/>}></Route>
+          <Route path='/dashboard/preview-appointment' element={<Appointments/>}></Route>
+          <Route path='/dashboard/preview-vaccination-appointments' element={<VaccinationAppointments/>}></Route>
           <Route path='/dashboard/veterinarians' element={<Veterinarians/>}></Route>
           <Route path='/dashboard/pet-owners' element={<PetOwners/>}></Route>
           <Route path='/dashboard/pets' element={<Pets/>}></Route>

@@ -20,7 +20,7 @@ const Login = () => {
             // If email or password is empty, do not proceed with login
             return;
         }
-        axios.post("http://localhost:3000/auth/adminlogin", value)
+        axios.post("http://localhost:3000/auth/admin-login", value)
             .then(result => {
                 if(result.data.loginStatus) {
                     navigate("/dashboard");

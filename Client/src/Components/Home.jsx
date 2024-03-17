@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaCircle } from "react-icons/fa";
@@ -120,6 +120,9 @@ const Home = () => {
             <Link to="/dashboard" className="btn btn-light">
               Book Appointment
             </Link>
+            <Link to="/dashboard/preview-vaccination-appointments" className="btn btn-success m-3">
+              View Calendar
+            </Link>
           </div>
         </div>
         <div className="px-5">
@@ -139,8 +142,11 @@ const Home = () => {
           <h3>Appointments</h3>
           <div className="d-flex align-items-center">
             <DateRangePicker />
-            <Link to="/dashboard" className="btn btn-light">
+            <Link to="/dashboard/book-appointment" className="btn btn-light">
               Book Appointment
+            </Link>
+            <Link to="/dashboard/preview-appointment" className="btn btn-success m-3">
+              View Calendar
             </Link>
           </div>
         </div>
@@ -159,7 +165,7 @@ const Home = () => {
       <div className="my-4 px-5 pt-3">
         <div className="d-flex justify-content-between align-items-center">
           <h3>List of Admins</h3>
-          <Link to="/dashboard" className="btn btn-success">
+          <Link to="/dashboard" className="btn btn-success m-3">
             Add Admin
           </Link>
         </div>
