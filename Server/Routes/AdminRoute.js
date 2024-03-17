@@ -29,7 +29,7 @@ router.get('/categories', (req, res) => {
 })
 
 router.get('/vet-types', (req, res) => {
-    const sql = "SELECT * FROM vettype";
+    const sql = "SELECT * FROM specialization";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
