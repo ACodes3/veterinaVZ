@@ -117,8 +117,11 @@ const Home = () => {
           <h3>Vaccinations</h3>
           <div className="d-flex align-items-center">
             <DateRangePicker />
-            <Link to="/dashboard/preview-vaccination-appointments" className="btn btn-light m-3">
+            <Link to="/dashboard/preview-vaccination-appointments" className="btn btn-light">
               Calendar
+            </Link>
+            <Link to="/dashboard/add-appointment" className="btn btn-success m-3">
+              Book an appointment
             </Link>
           </div>
         </div>
@@ -139,8 +142,11 @@ const Home = () => {
           <h3>Appointments</h3>
           <div className="d-flex align-items-center">
             <DateRangePicker />
-            <Link to="/dashboard/preview-appointment" className="btn btn-light m-3">
+            <Link to="/dashboard/preview-appointment" className="btn btn-light">
               Calendar
+            </Link>
+            <Link to="/dashboard/add-appointment" className="btn btn-success m-3">
+              Book an appointment
             </Link>
           </div>
         </div>
