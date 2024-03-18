@@ -18,7 +18,6 @@ const Pet = () => {
   const navigate = useNavigate();
   const [pet, setPet] = useState(null);
   const [vaccination, setVaccination] = useState([]);
-  const [veterinarian,setVeterinarian] = useState([]);
   const [petOwner, setPetOWner] = useState([]);
 
   useEffect(() => {
@@ -51,21 +50,7 @@ const Pet = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/auth/veterinarians`)
-      .then((result) => {
-        console.log(result.data.Result);
-        if (result.data.Status) {
-          setVeterinarian(result.data.Result); // Update the state with the array of vaccination types
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/auth/vaccination-types`)
+      .get(`http://localhost:3000/auth/vaccinations`)
       .then((result) => {
         console.log(result.data.Result);
         if (result.data.Status) {
@@ -206,29 +191,6 @@ const Pet = () => {
                       <strong>Vaccine Expiration:</strong>{" "}
                       {formatDate(pet.pet_vaccination_validity)}
                     </MDBCardText>
-                    <div className="col-12 d-flex justify-content-between align-items-center">
-                      <label htmlFor="category" className="form-label">
-                        <strong>Main Veterinarian:</strong>
-                      </label>
-                      <select
-                        name="petOwner"
-                        id="petowner"
-                        className="transparent-select"
-                        value={pet.pet_vet_id}
-                        disabled
-                      >
-                        {veterinarian.map((vet) => {
-                          return (
-                            <option
-                              key={vet.id}
-                              value={vet.id}
-                            >
-                              {vet.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
                     <div className="d-flex justify-content-center pt-1">
                       <button
                         onClick={(e) => {

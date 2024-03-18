@@ -21,6 +21,8 @@ import AddAdmin from './Components/AddAdmin';
 import EditAdmin from './Components/EditAdmin';
 import AddPetOwners from './Components/AddPetOwners';
 import EditPetOwner from './Components/EditPetOwner';
+import AddVaccination from './Components/Vaccinations/AddVaccination';
+import EditVaccination from './Components/Vaccinations/EditVaccination';
 
 function App() {
 
@@ -30,23 +32,31 @@ function App() {
         <Route path="/admin-login" element={<Login/>}></Route>
         <Route path="/dashboard" element={<Dashboard/>}>
           <Route path='' element={<Home/>}></Route>
+          <Route path='/dashboard/profile' element={<Profile/>}></Route>
           <Route path='/dashboard/preview-appointment' element={<Appointments/>}></Route>
           <Route path='/dashboard/preview-vaccination-appointments' element={<VaccinationAppointments/>}></Route>
+          {/*Veterinarian routes */}
           <Route path='/dashboard/veterinarians' element={<Veterinarians/>}></Route>
           <Route path='/dashboard/add-veterinarian' element={<AddVeterinarian/>}></Route>
           <Route path='/dashboard/edit-veterinarian/:id' element={<EditVeterinarian/>}></Route>
+          {/*Pet Owners routes */}
           <Route path='/dashboard/pet-owners' element={<PetOwners/>}></Route>
           <Route path='/dashboard/add-pet-owners' element={<AddPetOwners/>}></Route>
           <Route path='/dashboard/edit-pet-owner/:id' element={<EditPetOwner/>}></Route>
+          {/*Pets routes */}
           <Route path='/dashboard/pets' element={<Pets/>}></Route>
           <Route path='/dashboard/pet/:id' element={<Pet/>}></Route>
           <Route path='/dashboard/edit-pet/:id' element={<EditPet/>}></Route>
           <Route path='/dashboard/add-pet' element={<AddPet/>}></Route>
+          {/*Categories routes */}
           <Route path='/dashboard/categories' element={<Category/>}></Route>
-          <Route path='/dashboard/profile' element={<Profile/>}></Route>
           <Route path='/dashboard/add-category' element={<AddCategory/>}></Route>
+          {/*Admins routes */}
           <Route path='/dashboard/add-admin' element={<AddAdmin/>}></Route>
           <Route path='/dashboard/edit-admin/:id' element={<EditAdmin/>}></Route>
+          {/*Vaccinations routes */}
+          <Route path='/dashboard/add-vaccinations' element={<AddVaccination/>}></Route>
+          <Route path='/dashboard/edit-vaccination/:id' element={<EditVaccination/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

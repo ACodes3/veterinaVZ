@@ -62,10 +62,52 @@ router.get('/role-types', (req, res) => {
 
 //VACCINATIONS ROUTES
 
-router.get('/vaccination-types', (req, res) => {
-    const sql = "SELECT * FROM vaccinationtype";
+router.get('/vaccinations', (req, res) => {
+    const sql = "SELECT * FROM vaccinations";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.post('/add-vaccinations', (req, res) => {
+    const sql = `INSERT INTO vaccinations (vaccination_name, vaccination_vendor, vaccination_price, vaccination_validity) VALUES (?, ?, ?, ?) `;
+    const values = [
+        req.body.vaccination_name,
+        req.body.vaccination_vendor,
+        req.body.vaccination_price,
+        req.body.vaccination_validity,
+    ]
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true })
+    })
+})
+
+router.get("/vaccination/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM vaccinations WHERE vaccination_id = ?";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.delete("/delete-vaccination/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM vaccinations where vaccination_id = ?"
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.put("/edit-vaccination/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE vaccinations SET vaccination_name = ?, vaccination_vendor = ?, vaccination_price, vaccination_validity = ? WHERE vaccination_id = ?`;
+    const values = [req.body.vaccination_name, req.body.vaccination_vendor, req.body.vaccination_price, req.body.vaccination_validity, id];
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
         return res.json({ Status: true, Result: result })
     })
 })
@@ -219,7 +261,7 @@ router.put("/edit-pet/:id", (req, res) => {
 
 router.delete("/delete-pet/:id", (req, res) => {
     const id = req.params.id;
-    const sql = "DELETE FROM pets where id = ?"
+    const sql = "DELETE FROM pets where pet_id = ?"
     con.query(sql, [id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
@@ -388,18 +430,39 @@ router.put("/edit-admin/:id", (req, res) => {
     const id = req.params.id;
     const sql = `UPDATE admin SET email = ?, password = ? WHERE id = ?`;
     bcrypt.hash(req.body.password, 10, (err, hash) => {
-    const values = [req.body.email, req.body.password, id];
-    con.query(sql, values, (err, result) => {
-        if (err) return res.json({ Status: false, Error: err })
-        return res.json({ Status: true, Result: result })
+        const values = [req.body.email, req.body.password, id];
+        con.query(sql, values, (err, result) => {
+            if (err) return res.json({ Status: false, Error: err })
+            return res.json({ Status: true, Result: result })
+        })
     })
-})
 })
 
 router.delete("/delete-admin/:id", (req, res) => {
     const id = req.params.id;
     const sql = "DELETE FROM admin where id = ?"
     con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//COMBINED TABLE WITH THE PETS AND OWNERS
+
+router.get('/pets-and-owner', (req, res) => {
+    const sql = "SELECT pets.*, owners.* FROM pets INNER JOIN owners ON pets.owner_id = owners.owner_id";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//COMBINED TABLE FOR PETS AND THEIR OWNER (1 OWNER - MULTIPLE PETS)
+
+router.get('/pets-and-owner/:owner_id', (req, res) => {
+    const owner_id = req.params.owner_id; // Retrieve the owner_id from the request parameters
+    const sql = "SELECT pets.*, owners.* FROM pets INNER JOIN owners ON pets.owner_id = owners.owner_id WHERE pets.owner_id = ?";
+    con.query(sql, [owner_id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
     })

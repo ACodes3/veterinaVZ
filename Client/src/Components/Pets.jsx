@@ -8,6 +8,7 @@ import { MdPets } from "react-icons/md";
 const Pets = () => {
   const navigate = useNavigate();
   const [pet, setPet] = useState([]);
+  const [owner, setOwner] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:3000/auth/pets")
@@ -107,8 +108,8 @@ const Pets = () => {
                   key={pets.id}
                   onClick={() => navigate(`/dashboard/pet/${pets.id}`)}
                 >
-                  <td>{pets.pet_nickname}</td>
-                  <td>{pets.pet_nb_chip}</td>
+                  <td>{pets.pet_name}</td>
+                  <td>{pets.pet_chip_number}</td>
                   <td>{pets.pet_type}</td>
                   <td>{pets.pet_breed}</td>
                   <td>
