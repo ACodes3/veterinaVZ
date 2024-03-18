@@ -104,7 +104,7 @@ router.delete("/delete-vaccination/:id", (req, res) => {
 
 router.put("/edit-vaccination/:id", (req, res) => {
     const id = req.params.id;
-    const sql = `UPDATE vaccinations SET vaccination_name = ?, vaccination_vendor = ?, vaccination_price, vaccination_validity = ? WHERE vaccination_id = ?`;
+    const sql = `UPDATE vaccinations SET vaccination_name = ?, vaccination_vendor = ?, vaccination_price = ?, vaccination_validity = ? WHERE vaccination_id = ?`;
     const values = [req.body.vaccination_name, req.body.vaccination_vendor, req.body.vaccination_price, req.body.vaccination_validity, id];
     con.query(sql, values, (err, result) => {
         if (err) return res.json({ Status: false, Error: err })
@@ -128,21 +128,20 @@ const upload = multer({
 
 //VETERINARIANS ROUTES
 
-router.post("/add-veterinarian", upload.single("image"), (req, res) => {
-    const sql = "INSERT INTO veterinarian (name, email, password, salary, address, image, specialization_id, category_id) VALUES (?)";
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
+router.post("/add-veterinarian", (req, res) => {
+    const sql = `INSERT INTO veterinarians (veterinarian_name, veterinarian_email, veterinarian_password, veterinarian_address, specialization_id, category_id, role_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    bcrypt.hash(req.body.veterinarian_password, 10, (err, hash) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         const values = [
-            req.body.name,
-            req.body.email,
+            req.body.veterinarian_name,
+            req.body.veterinarian_email,
             hash,
-            req.body.salary,
-            req.body.address,
-            req.file.filename,
+            req.body.veterinarian_address,
             req.body.specialization_id,
             req.body.category_id,
+            req.body.role_id,
         ]
-        con.query(sql, [values], (err, result) => {
+        con.query(sql, values, (err, result) => {
             if (err) return res.json({ Status: false, Error: err })
             return res.json({ Status: true })
         })
@@ -159,7 +158,7 @@ router.get('/veterinarians', (req, res) => {
 
 router.get("/veterinarian/:id", (req, res) => {
     const id = req.params.id;
-    const sql = "SELECT * FROM veterinarian WHERE id = ?";
+    const sql = "SELECT * FROM veterinarians WHERE veterinarian_id = ?";
     con.query(sql, [id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
@@ -168,23 +167,24 @@ router.get("/veterinarian/:id", (req, res) => {
 
 router.put("/edit-veterinarian/:id", (req, res) => {
     const id = req.params.id;
-    const sql = `UPDATE veterinarian set name = ?, email = ?, salary = ?, address = ?, specialization_id = ? Where id = ?`
+    const sql = `UPDATE veterinarians set veterinarian_name = ?, veterinarian_email = ?, veterinarian_password, veterinarian_address = ?, specialization_id = ? Where veterinarian_id = ?`
     const values = [
-        req.body.name,
-        req.body.email,
-        req.body.salary,
-        req.body.address,
-        req.body.specialization_id
+        req.body.veterinarian_name,
+        req.body.veterinarian_email,
+        req.body.veterinarian_password,
+        req.body.veterinarian_address,
+        req.body.specialization_id,
+        id,
     ]
-    con.query(sql, [...values, id], (err, result) => {
-        if (err) return res.json({ Status: false, Error: "Query Error" })
-        return res.json({ Status: true, Result: result })
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true })
     })
 })
 
 router.delete("/delete-veterinarian/:id", (req, res) => {
     const id = req.params.id;
-    const sql = "DELETE FROM veterinarian where id = ?"
+    const sql = "DELETE FROM veterinarians where veterinarian_id = ?"
     con.query(sql, [id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
