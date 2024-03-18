@@ -249,7 +249,7 @@ router.post("/add-pet-owner", (req, res) => {
 })
 
 router.get('/pet-owners', (req, res) => {
-    const sql = "SELECT * FROM petowners";
+    const sql = "SELECT * FROM owners";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
@@ -319,7 +319,7 @@ router.get("/pets-count", (req, res) => {
 })
 
 router.get("/pet-owners-count", (req, res) => {
-    const sql = "SELECT count(pet_owner_id) as petowners from petowners";
+    const sql = "SELECT count(owner_id) as petowners from owners";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
