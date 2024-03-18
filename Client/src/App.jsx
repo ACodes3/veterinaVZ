@@ -32,7 +32,9 @@ function App() {
         <Route path="/admin-login" element={<Login/>}></Route>
         <Route path="/dashboard" element={<Dashboard/>}>
           <Route path='' element={<Home/>}></Route>
+          {/*Profile routes */}
           <Route path='/dashboard/profile' element={<Profile/>}></Route>
+          {/*Appointments routes */}
           <Route path='/dashboard/preview-appointment' element={<Appointments/>}></Route>
           <Route path='/dashboard/preview-vaccination-appointments' element={<VaccinationAppointments/>}></Route>
           {/*Veterinarian routes */}
