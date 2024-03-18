@@ -7,6 +7,8 @@ import path from "path";
 
 const router = express.Router()
 
+//LOGIN ROUTES
+
 router.post("/admin-login", (req, res) => {
     const sql = "SELECT * from admin Where email = ? and password = ?"
     con.query(sql, [req.body.email, req.body.password], (err, result) => {
@@ -20,32 +22,10 @@ router.post("/admin-login", (req, res) => {
     })
 })
 
+//CATEGORIES ROUTES
+
 router.get('/categories', (req, res) => {
     const sql = "SELECT * FROM category";
-    con.query(sql, (err, result) => {
-        if (err) return res.json({ Status: false, Error: "Query Error" })
-        return res.json({ Status: true, Result: result })
-    })
-})
-
-router.get('/vet-types', (req, res) => {
-    const sql = "SELECT * FROM specialization";
-    con.query(sql, (err, result) => {
-        if (err) return res.json({ Status: false, Error: "Query Error" })
-        return res.json({ Status: true, Result: result })
-    })
-})
-
-router.get('/role-types', (req, res) => {
-    const sql = "SELECT * FROM roles";
-    con.query(sql, (err, result) => {
-        if (err) return res.json({ Status: false, Error: "Query Error" })
-        return res.json({ Status: true, Result: result })
-    })
-})
-
-router.get('/vaccination-types', (req, res) => {
-    const sql = "SELECT * FROM vaccinationtype";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
@@ -57,6 +37,36 @@ router.post('/add-category', (req, res) => {
     con.query(sql, [req.body.category], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true })
+    })
+})
+
+//SPECIALIZATIONS ROUTES
+
+router.get('/vet-types', (req, res) => {
+    const sql = "SELECT * FROM specialization";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//ROLES ROUTES
+
+router.get('/role-types', (req, res) => {
+    const sql = "SELECT * FROM roles";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//VACCINATIONS ROUTES
+
+router.get('/vaccination-types', (req, res) => {
+    const sql = "SELECT * FROM vaccinationtype";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
     })
 })
 
@@ -73,6 +83,8 @@ const upload = multer({
     storage: storage
 })
 //end image upload
+
+//VETERINARIANS ROUTES
 
 router.post("/add-veterinarian", upload.single("image"), (req, res) => {
     const sql = "INSERT INTO veterinarian (name, email, password, salary, address, image, specialization_id, category_id) VALUES (?)";
@@ -136,6 +148,8 @@ router.delete("/delete-veterinarian/:id", (req, res) => {
         return res.json({ Status: true, Result: result })
     })
 })
+
+//PETS ROUTES
 
 router.post("/add-pet", upload.single("image"), (req, res) => {
     const sql = "INSERT INTO pets (pet_owner, pet_nickname, pet_nb_chip, pet_type, pet_breed, pet_gender, pet_birth_date, pet_height, pet_weight, pet_vaccinated, image, pet_vaccination_id, pet_vet_id, category_id, pet_vaccination_date, pet_vaccination_validity) VALUES (?)";
@@ -212,6 +226,8 @@ router.delete("/delete-pet/:id", (req, res) => {
     })
 })
 
+//PET OWNERS ROUTES
+
 router.post("/add-pet-owner", (req, res) => {
     const sql = "INSERT INTO petowners (pet_owner_id, pet_nickname, pet_nb_chip, pet_type, pet_breed, pet_gender, pet_birth_date, pet_height, pet_weight, pet_vaccinated, image) VALUES (?)";
     bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -276,6 +292,8 @@ router.delete("/delete-pet-owner/:id", (req, res) => {
     })
 })
 
+//DASHBOARD COUNT ROUTES
+
 router.get("/admin-count", (req, res) => {
     const sql = "SELECT count(id) as admin from admin";
     con.query(sql, (err, result) => {
@@ -307,6 +325,8 @@ router.get("/pet-owners-count", (req, res) => {
         return res.json({ Status: true, Result: result })
     })
 })
+
+//ADMIN ROUTES
 
 router.get("/admin-records", (req, res) => {
     const sql = "SELECT * from admin";
