@@ -36,6 +36,14 @@ router.get('/vet-types', (req, res) => {
     })
 })
 
+router.get('/role-types', (req, res) => {
+    const sql = "SELECT * FROM roles";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
 router.get('/vaccination-types', (req, res) => {
     const sql = "SELECT * FROM vaccinationtype";
     con.query(sql, (err, result) => {
@@ -45,7 +53,7 @@ router.get('/vaccination-types', (req, res) => {
 })
 
 router.post('/add-category', (req, res) => {
-    const sql = "INSERT INTO category (`name`) VALUES (?)"
+    const sql = "INSERT INTO category (`category_name`) VALUES (?)"
     con.query(sql, [req.body.category], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true })
@@ -88,7 +96,7 @@ router.post("/add-veterinarian", upload.single("image"), (req, res) => {
 })
 
 router.get('/veterinarians', (req, res) => {
-    const sql = "SELECT * FROM veterinarian";
+    const sql = "SELECT * FROM veterinarians";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
@@ -277,7 +285,7 @@ router.get("/admin-count", (req, res) => {
 })
 
 router.get("/veterinarians-count", (req, res) => {
-    const sql = "SELECT count(id) as veterinarian from veterinarian";
+    const sql = "SELECT count(id) as veterinarian from veterinarians";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
@@ -303,6 +311,72 @@ router.get("/pet-owners-count", (req, res) => {
 router.get("/admin-records", (req, res) => {
     const sql = "SELECT * from admin";
     con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.get("/admin/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM admin WHERE id = ?";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.post("/add-admin", (req, res) => {
+    // Log request body
+    console.log("Request Body:", req.body);
+
+    // Check if password is present in the request body
+    if (!req.body.password) {
+        console.error("Password is missing in request body");
+        return res.json({ Status: false, Error: "Password is missing" });
+    }
+
+    // Hash the password
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if (err) {
+            console.error("Error hashing password:", err);
+            return res.json({ Status: false, Error: "Error hashing password" });
+        }
+
+        // SQL query with hashed password and correct values format
+        const sql = `INSERT INTO admin (email, password, category_id, role_id) VALUES (?, ?, ?, ?)`;
+        const values = [
+            req.body.email,
+            hash, // Use the hashed password
+            req.body.category_id,
+            req.body.role_id,
+        ];
+        con.query(sql, values, (err, result) => {
+            if (err) {
+                console.error("Error executing SQL query:", err);
+                return res.json({ Status: false, Error: "Error executing SQL query" });
+            }
+            console.log("Admin added successfully");
+            return res.json({ Status: true });
+        });
+    });
+});
+
+router.put("/edit-admin/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE admin SET email = ?, password = ? WHERE id = ?`;
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+    const values = [req.body.email, req.body.password, id];
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true, Result: result })
+    })
+})
+})
+
+router.delete("/delete-admin/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM admin where id = ?"
+    con.query(sql, [id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
     })

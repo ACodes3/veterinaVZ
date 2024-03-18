@@ -43,9 +43,9 @@ const Category = () => {
               </tr>
             </thead>
             <tbody>
-              {category.map((c) => (
-                <tr key={c.id}>
-                  <td>{c.name}</td>
+              {category.map((categ) => (
+                <tr key={categ.category_id}>
+                  <td>{categ.category_name}</td>
                 </tr>
               ))}
             </tbody>

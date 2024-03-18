@@ -67,6 +67,18 @@ const Home = () => {
       });
   };
 
+  const handleDeleteAdmin = (id) => {
+    axios
+      .delete("http://localhost:3000/auth/delete-admin/" + id)
+      .then((result) => {
+        if (result.data.Status) {
+          window.location.reload();
+        } else {
+          alert(result.data.Error);
+        }
+      });
+  };
+
   return (
     <div>
       <div className="p-3 d-flex justify-content-around mt-3">
@@ -165,7 +177,7 @@ const Home = () => {
       <div className="my-4 px-5 pt-3">
         <div className="d-flex justify-content-between align-items-center">
           <h3>List of Admins</h3>
-          <Link to="/dashboard" className="btn btn-success m-3">
+          <Link to="/dashboard/add-admin" className="btn btn-success m-3">
             Add Admin
           </Link>
         </div>
@@ -202,8 +214,8 @@ const Home = () => {
                     <FaCircle color="green" /> Available
                   </td>
                   <td>
-                    <button className="btn btn-success btn-sm me-2">Edit</button>
-                    <button className="btn btn-danger btn-sm">Delete</button>
+                    <Link to={`/dashboard/edit-admin/` + admin.id} className="btn btn-success btn-sm me-2">Edit</Link>
+                    <button className="btn btn-danger btn-sm" onClick={() => handleDeleteAdmin(admin.id)}>Delete</button>
                   </td>
                 </tr>
               ))}

@@ -16,19 +16,11 @@ const PetOwners = () => {
           <thead>
             <tr>
               <th>Status</th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><FaPersonCircleXmark /> No Owners Found</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
             </tr>
           </tbody>
         </table>

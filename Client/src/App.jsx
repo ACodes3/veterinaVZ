@@ -17,6 +17,8 @@ import Pet from './Components/Pet';
 import EditPet from './Components/EditPet';
 import Appointments from "./Components/Appointments/Appointments";
 import VaccinationAppointments from './Components/Appointments/VaccinationAppointments';
+import AddAdmin from './Components/AddAdmin';
+import EditAdmin from './Components/EditAdmin';
 
 function App() {
 
@@ -37,6 +39,8 @@ function App() {
           <Route path='/dashboard/categories' element={<Category/>}></Route>
           <Route path='/dashboard/profile' element={<Profile/>}></Route>
           <Route path='/dashboard/add-category' element={<AddCategory/>}></Route>
+          <Route path='/dashboard/add-admin' element={<AddAdmin/>}></Route>
+          <Route path='/dashboard/edit-admin/:id' element={<EditAdmin/>}></Route>
           <Route path='/dashboard/add-veterinarian' element={<AddVeterinarian/>}></Route>
           <Route path='/dashboard/edit-veterinarian/:id' element={<EditVeterinarian/>}></Route>
         </Route>
