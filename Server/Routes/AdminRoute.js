@@ -228,20 +228,22 @@ router.delete("/delete-pet/:id", (req, res) => {
 
 //PET OWNERS ROUTES
 
-router.post("/add-pet-owner", (req, res) => {
-    const sql = "INSERT INTO petowners (pet_owner_id, pet_nickname, pet_nb_chip, pet_type, pet_breed, pet_gender, pet_birth_date, pet_height, pet_weight, pet_vaccinated, image) VALUES (?)";
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if (err) return res.json({ Status: false, Error: "Query Error" })
+router.post("/add-pet-owners", (req, res) => {
+    const sql = `INSERT INTO owners (owner_name, owner_emso, owner_birthdate, owner_email, owner_password, owner_phone, owner_address, category_id, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    bcrypt.hash(req.body.owner_password, 10, (err, hash) => {
+        if (err) return res.json({ Status: false, Error: err })
         const values = [
-            req.body.pet_owner_name,
-            req.body.pet_owner_surname,
-            req.body.pet_owner_emso,
-            req.body.pet_owner_birth_date,
-            req.body.pet_owner_email,
-            req.body.pet_owner_telephone,
-            req.body.pet_owner_address,
+            req.body.owner_name,
+            req.body.owner_emso,
+            req.body.owner_birthdate,
+            req.body.owner_email,
+            hash,
+            req.body.owner_phone,
+            req.body.owner_address,
+            req.body.category_id,
+            req.body.role_id,
         ]
-        con.query(sql, [values], (err, result) => {
+        con.query(sql, values, (err, result) => {
             if (err) return res.json({ Status: false, Error: err })
             return res.json({ Status: true })
         })
@@ -258,7 +260,7 @@ router.get('/pet-owners', (req, res) => {
 
 router.get("/pet-owner/:id", (req, res) => {
     const id = req.params.id;
-    const sql = "SELECT * FROM petowners WHERE id = ?";
+    const sql = "SELECT * FROM owners WHERE owner_id = ?";
     con.query(sql, [id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
@@ -267,25 +269,26 @@ router.get("/pet-owner/:id", (req, res) => {
 
 router.put("/edit-pet-owner/:id", (req, res) => {
     const id = req.params.id;
-    const sql = `UPDATE petowners set pet_nickname = ?, pet_nb_chip = ?, pet_type = ?, pet_breed = ?, pet_gender = ?, pet_birth_date = ?, pet_height = ?, pet_weight = ?, pet_vaccinated = ? Where id = ?`
+    console.log("ID:", id); // Add this line to inspect the value of id
+    const sql = `UPDATE owners SET owner_name = ?, owner_emso = ?, owner_email = ?, owner_password = ?, owner_phone = ?, owner_address = ? WHERE owner_id = ?`;
     const values = [
-        req.body.pet_owner_name,
-        req.body.pet_owner_surname,
-        req.body.pet_owner_emso,
-        req.body.pet_owner_birth_date,
-        req.body.pet_owner_email,
-        req.body.pet_owner_telephone,
-        req.body.pet_owner_address,
-    ]
-    con.query(sql, [...values, id], (err, result) => {
-        if (err) return res.json({ Status: false, Error: "Query Error" })
-        return res.json({ Status: true, Result: result })
-    })
-})
+        req.body.owner_name,
+        req.body.owner_emso,
+        req.body.owner_email,
+        req.body.owner_password,
+        req.body.owner_phone,
+        req.body.owner_address,
+        id, // Ensure id is a single value
+    ];
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err });
+        return res.json({ Status: true, Result: result });
+    });
+});
 
 router.delete("/delete-pet-owner/:id", (req, res) => {
     const id = req.params.id;
-    const sql = "DELETE FROM petowners where id = ?"
+    const sql = "DELETE FROM owners where owner_id = ?"
     con.query(sql, [id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })

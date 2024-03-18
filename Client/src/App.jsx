@@ -19,6 +19,8 @@ import Appointments from "./Components/Appointments/Appointments";
 import VaccinationAppointments from './Components/Appointments/VaccinationAppointments';
 import AddAdmin from './Components/AddAdmin';
 import EditAdmin from './Components/EditAdmin';
+import AddPetOwners from './Components/AddPetOwners';
+import EditPetOwner from './Components/EditPetOwner';
 
 function App() {
 
@@ -31,7 +33,11 @@ function App() {
           <Route path='/dashboard/preview-appointment' element={<Appointments/>}></Route>
           <Route path='/dashboard/preview-vaccination-appointments' element={<VaccinationAppointments/>}></Route>
           <Route path='/dashboard/veterinarians' element={<Veterinarians/>}></Route>
+          <Route path='/dashboard/add-veterinarian' element={<AddVeterinarian/>}></Route>
+          <Route path='/dashboard/edit-veterinarian/:id' element={<EditVeterinarian/>}></Route>
           <Route path='/dashboard/pet-owners' element={<PetOwners/>}></Route>
+          <Route path='/dashboard/add-pet-owners' element={<AddPetOwners/>}></Route>
+          <Route path='/dashboard/edit-pet-owner/:id' element={<EditPetOwner/>}></Route>
           <Route path='/dashboard/pets' element={<Pets/>}></Route>
           <Route path='/dashboard/pet/:id' element={<Pet/>}></Route>
           <Route path='/dashboard/edit-pet/:id' element={<EditPet/>}></Route>
@@ -41,8 +47,6 @@ function App() {
           <Route path='/dashboard/add-category' element={<AddCategory/>}></Route>
           <Route path='/dashboard/add-admin' element={<AddAdmin/>}></Route>
           <Route path='/dashboard/edit-admin/:id' element={<EditAdmin/>}></Route>
-          <Route path='/dashboard/add-veterinarian' element={<AddVeterinarian/>}></Route>
-          <Route path='/dashboard/edit-veterinarian/:id' element={<EditVeterinarian/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

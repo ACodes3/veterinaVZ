@@ -21,7 +21,7 @@ const PetOwners = () => {
 
   const handleDeleteOwner = (id) => {
     axios
-      .delete("http://localhost:3000/auth/delete-veterinarian/" + id)
+      .delete("http://localhost:3000/auth/delete-pet-owner/" + id)
       .then((result) => {
         if (result.data.Status) {
           window.location.reload();
@@ -32,14 +32,14 @@ const PetOwners = () => {
   };
 
   return (
-    <div className="px-5 my-4 mx-2">
-    <div className="d-flex justify-content-between align-items-center">
-      <h3>Pet - Owners  List</h3>
-      <Link to="/dashboard/add-pet-owner" className="btn btn-success">
+    <div className="px-5 my-4 mx-3">
+      <div className="d-flex justify-content-between align-items-center">
+        <h3>Pet - Owners List</h3>
+        <Link to="/dashboard/add-pet-owners" className="btn btn-success">
           Add Pet Owner
         </Link>
-    </div>
-    <div className="mt-3">
+      </div>
+      <div className="mt-3">
         {owner.length === 0 ? (
           <table className="table">
             <thead>
@@ -49,7 +49,9 @@ const PetOwners = () => {
             </thead>
             <tbody>
               <tr>
-                <td><FaPersonCircleXmark /> No Owner Found</td>
+                <td>
+                  <FaPersonCircleXmark /> No Owner Found
+                </td>
               </tr>
             </tbody>
           </table>
@@ -95,4 +97,4 @@ const PetOwners = () => {
   );
 };
 
-export default PetOwners
+export default PetOwners;
