@@ -106,6 +106,7 @@ const Pets = () => {
                 <tr
                   key={pets.pet_id}
                   onClick={() => navigate(`/dashboard/pet/${pets.pet_id}`)}
+                  style={{ cursor: 'pointer' }}
                 >
                   <td>{pets.pet_name}</td>
                   <td>{pets.pet_chip_number}</td>

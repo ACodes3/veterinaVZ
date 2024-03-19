@@ -225,7 +225,7 @@ router.get('/pets', (req, res) => {
 
 router.get("/pet/:id", (req, res) => {
     const id = req.params.id;
-    const sql = "SELECT * FROM pets WHERE id = ?";
+    const sql = "SELECT * FROM pets WHERE pet_id = ?";
     con.query(sql, [id], (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
@@ -234,7 +234,7 @@ router.get("/pet/:id", (req, res) => {
 
 router.put("/edit-pet/:id", (req, res) => {
     const id = req.params.id;
-    const sql = `UPDATE pets set pet_nickname = ?, pet_nb_chip = ?, pet_type = ?, pet_breed = ?, pet_gender = ?, pet_birth_date = ?, pet_height = ?, pet_weight = ?, pet_vaccinated = ? Where id = ?`
+    const sql = `UPDATE pets set pet_name = ?, pet_chip_number = ?, pet_type = ?, pet_breed = ?, pet_gender = ?, pet_birthdate = ?, pet_height = ?, pet_weight = ?, owner_id = ?, vaccination_id = ?, pet_vaccination_date = ?, veterinarian_id = ? Where pet_id = ?`
     const values = [
         req.body.pet_name,
         req.body.pet_chip_number,

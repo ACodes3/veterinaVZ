@@ -162,7 +162,7 @@ const Pet = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/dashboard/edit-pet/${pet.id}`);
+                          navigate(`/dashboard/edit-pet/` + id);
                         }}
                         className="btn btn-success btn-sm me-4"
                       >
