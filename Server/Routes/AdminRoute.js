@@ -193,30 +193,25 @@ router.delete("/delete-veterinarian/:id", (req, res) => {
 
 //PETS ROUTES
 
-router.post("/add-pet", upload.single("image"), (req, res) => {
-    const sql = "INSERT INTO pets (pet_owner, pet_nickname, pet_nb_chip, pet_type, pet_breed, pet_gender, pet_birth_date, pet_height, pet_weight, pet_vaccinated, image, pet_vaccination_id, pet_vet_id, category_id, pet_vaccination_date, pet_vaccination_validity) VALUES (?)";
+router.post("/add-pet", (req, res) => {
+    const sql = "INSERT INTO pets (pet_name, pet_chip_number, pet_type, pet_breed, pet_gender, pet_birthdate, pet_height, owner_id, vaccination_id, veterinarian_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
-        req.body.pet_owner,
-        req.body.pet_nickname,
-        req.body.pet_nb_chip,
+        req.body.pet_name,
+        req.body.pet_chip_number,
         req.body.pet_type,
         req.body.pet_breed,
         req.body.pet_gender,
-        req.body.pet_birth_date,
+        req.body.pet_birthdate,
         req.body.pet_height,
         req.body.pet_weight,
-        req.body.pet_vaccinated,
-        req.file.filename,
-        req.body.pet_vaccination_id,
-        req.body.pet_vet_id,
-        req.body.category_id,
-        req.body.pet_vaccination_date,
-        req.body.pet_vaccination_validity,
+        req.body.owner_id,
+        req.body.vaccination_id,
+        req.body.veterinarian_id,
     ];
-    con.query(sql, [values], (err, result) => {
-        if (err) return res.json({ Status: false, Error: err });
-        return res.json({ Status: true });
-    });
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true })
+    })
 });
 
 router.get('/pets', (req, res) => {
@@ -356,7 +351,7 @@ router.get("/veterinarians-count", (req, res) => {
 })
 
 router.get("/pets-count", (req, res) => {
-    const sql = "SELECT count(id) as pets from pets";
+    const sql = "SELECT count(pet_id) as pets from pets";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
