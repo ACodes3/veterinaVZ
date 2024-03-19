@@ -70,19 +70,19 @@ const Veterinarians = () => {
             </thead>
             <tbody>
               {veterinarian.map((vets) => (
-                <tr key={vets.id}>
-                  <td>{vets.name}</td>
-                  <td>{vets.email}</td>
+                <tr key={vets.veterinarian_id}>
+                  <td>{vets.veterinarian_name}</td>
+                  <td>{vets.veterinarian_email}</td>
                   <td>
                     <Link
-                      to={`/dashboard/edit-veterinarian/` + vets.id}
+                      to={`/dashboard/edit-veterinarian/` + vets.veterinarian_id}
                       className="btn btn-success btn-sm me-2"
                     >
                       Edit
                     </Link>
                     <button
                       className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(vets.id)}
+                      onClick={() => handleDelete(vets.veterinarian_id)}
                     >
                       Delete
                     </button>

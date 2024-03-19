@@ -167,7 +167,7 @@ router.get("/veterinarian/:id", (req, res) => {
 
 router.put("/edit-veterinarian/:id", (req, res) => {
     const id = req.params.id;
-    const sql = `UPDATE veterinarians set veterinarian_name = ?, veterinarian_email = ?, veterinarian_password, veterinarian_address = ?, specialization_id = ? Where veterinarian_id = ?`
+    const sql = `UPDATE veterinarians set veterinarian_name = ?, veterinarian_email = ?, veterinarian_password = ?, veterinarian_address = ?, specialization_id = ? Where veterinarian_id = ?`
     const values = [
         req.body.veterinarian_name,
         req.body.veterinarian_email,
@@ -348,7 +348,7 @@ router.get("/admin-count", (req, res) => {
 })
 
 router.get("/veterinarians-count", (req, res) => {
-    const sql = "SELECT count(id) as veterinarian from veterinarians";
+    const sql = "SELECT count(veterinarian_id) as veterinarian from veterinarians";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })

@@ -95,7 +95,7 @@ const EditVeterinarian = () => {
           </div>
           <div className="col-12">
             <label htmlFor="inputPassword" className="form-label">
-              Salary
+              Password
             </label>
             <input
               type="password"
@@ -143,8 +143,8 @@ const EditVeterinarian = () => {
             >
               {specialization.map((c) => {
                 return (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
+                  <option key={c.specialization_id} value={c.specialization_id}>
+                    {c.specialization_name}
                   </option>
                 );
               })}

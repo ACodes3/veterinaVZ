@@ -88,7 +88,7 @@ const AddVeterinarian = () => {
               id="inputName"
               placeholder="Enter Name"
               onChange={(e) =>
-                setVeterinarian({ ...veterinarian, name: e.target.value })
+                setVeterinarian({ ...veterinarian, veterinarian_name: e.target.value })
               }
             />
           </div>
@@ -103,7 +103,7 @@ const AddVeterinarian = () => {
               placeholder="Enter Email"
               autoComplete="off"
               onChange={(e) =>
-                setVeterinarian({ ...veterinarian, email: e.target.value })
+                setVeterinarian({ ...veterinarian, veterinarian_email: e.target.value })
               }
             />
           </div>
@@ -117,7 +117,7 @@ const AddVeterinarian = () => {
               id="inputPassword4"
               placeholder="Enter Password"
               onChange={(e) =>
-                setVeterinarian({ ...veterinarian, password: e.target.value })
+                setVeterinarian({ ...veterinarian, veterinarian_password: e.target.value })
               }
             />
           </div>
@@ -132,7 +132,7 @@ const AddVeterinarian = () => {
               placeholder="1234 Main St"
               autoComplete="off"
               onChange={(e) =>
-                setVeterinarian({ ...veterinarian, address: e.target.value })
+                setVeterinarian({ ...veterinarian, veterinarian_address: e.target.value })
               }
             />
           </div>
@@ -153,8 +153,8 @@ const AddVeterinarian = () => {
             >
               {specialization.map((vet) => {
                 return (
-                  <option key={vet.id} value={vet.id}>
-                    {vet.name}
+                  <option key={vet.specialization_id} value={vet.specialization_id}>
+                    {vet.specialization_name}
                   </option>
                 );
               })}
@@ -177,8 +177,8 @@ const AddVeterinarian = () => {
             >
               {category.map((cat) => {
                 return (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
+                  <option key={cat.category_id} value={cat.category_id}>
+                    {cat.category_name}
                   </option>
                 );
               })}
@@ -201,15 +201,15 @@ const AddVeterinarian = () => {
             >
               {role.map((rol) => {
                 return (
-                  <option key={rol.id} value={rol.id}>
-                    {rol.name}
+                  <option key={rol.role_id} value={rol.role_id}>
+                    {rol.role_name}
                   </option>
                 );
               })}
             </select>
           </div>
           <div className="col-12">
-            <button className="btn btn-success w-100 rounded-0 mb-2">
+            <button className="btn btn-success w-100 rounded-0 mb-2 mt-3">
               Add Veterinarian
             </button>
           </div>
