@@ -194,7 +194,7 @@ router.delete("/delete-veterinarian/:id", (req, res) => {
 //PETS ROUTES
 
 router.post("/add-pet", (req, res) => {
-    const sql = "INSERT INTO pets (pet_name, pet_chip_number, pet_type, pet_breed, pet_gender, pet_birthdate, pet_height, pet_weight, owner_id, vaccination_id, veterinarian_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO pets (pet_name, pet_chip_number, pet_type, pet_breed, pet_gender, pet_birthdate, pet_height, pet_weight, owner_id, vaccination_id, pet_vaccination_date, veterinarian_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
         req.body.pet_name,
         req.body.pet_chip_number,
@@ -206,6 +206,7 @@ router.post("/add-pet", (req, res) => {
         req.body.pet_weight,
         req.body.owner_id,
         req.body.vaccination_id,
+        req.body.pet_vaccination_date,
         req.body.veterinarian_id,
     ];
     con.query(sql, values, (err, result) => {
@@ -245,6 +246,7 @@ router.put("/edit-pet/:id", (req, res) => {
         req.body.pet_weight,
         req.body.owner_id,
         req.body.vaccination_id,
+        req.body.pet_vaccination_date,
         req.body.veterinarian_id,
         id,
     ]
@@ -462,6 +464,32 @@ router.get('/pets-and-owner/:owner_id', (req, res) => {
         return res.json({ Status: true, Result: result })
     })
 })
+
+//COMBINED TABLE FOR PETS WITH THEIR ID
+router.get('/pets-combined/:pet_id', (req, res) => {
+    const pet_id = req.params.pet_id;
+    const sql = `
+        SELECT 
+            p.*,
+            o.owner_name,
+            v.veterinarian_name,
+            vac.*
+        FROM 
+            pets p
+            INNER JOIN owners o ON p.owner_id = o.owner_id
+            INNER JOIN veterinarians v ON p.veterinarian_id = v.veterinarian_id
+            INNER JOIN vaccinations vac ON p.vaccination_id = vac.vaccination_id
+        WHERE
+            p.pet_id = ?`; // Filter by the provided pet_id
+    con.query(sql, [pet_id], (err, result) => {
+        if (err) {
+            console.error("Query Error:", err); // Log the error for debugging
+            return res.json({ Status: false, Error: "Query Error" });
+        }
+        return res.json({ Status: true, Result: result });
+    });
+});
+
 
 router.get("/logout", (req, res) => {
     res.clearCookie("token")

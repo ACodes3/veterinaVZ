@@ -18,6 +18,7 @@ const AddPet = () => {
     pet_weight: "",
     owner_id: "",
     vaccination_id: "",
+    pet_vaccination_date: "",
     veterinarian_id: "",
   });
   useEffect(() => {
@@ -247,6 +248,21 @@ const AddPet = () => {
               );
             })}
           </select>
+        </div>
+        <div className="col-12">
+          <label htmlFor="inputDateVaccination" className="form-label">
+            Date of Vaccination
+          </label>
+          <input
+            type="date"
+            className="form-control rounded-0"
+            id="inputDateVaccination"
+            placeholder="Enter the date of birth"
+            autoComplete="off"
+            onChange={(e) =>
+              setPet({ ...pet, pet_vaccination_date: e.target.value })
+            }
+          />
         </div>
         <div className="col-12">
           <label htmlFor="mainVet" className="form-label">

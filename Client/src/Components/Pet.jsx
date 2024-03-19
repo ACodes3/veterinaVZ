@@ -12,49 +12,24 @@ import {
   MDBCardImage,
 } from "mdb-react-ui-kit";
 import { formatDate } from "./Formaters/FormatDate";
+import CatImage from "../assets/sampleImages/cat.jpg";
+import DogImage from "../assets/sampleImages/dog.jpg";
+import RabbitImage from "../assets/sampleImages/rabbit.png";
+import HorseImage from "../assets/sampleImages/hotse.jpg";
+import DefaultImage from "../assets/sampleImages/default.jpg";
 
 const Pet = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [pet, setPet] = useState(null);
-  const [vaccination, setVaccination] = useState([]);
-  const [petOwner, setPetOWner] = useState([]);
+  const [pet, setPet] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/auth/pet/${id}`)
+      .get(`http://localhost:3000/auth/pets-combined/` + id)
       .then((result) => {
         console.log(result.data.Result); // Log the result here
         if (result.data.Status) {
           setPet(result.data.Result[0]); // Access the first element of the array
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/auth/pet-owners`)
-      .then((result) => {
-        console.log(result.data.Result);
-        if (result.data.Status) {
-          setPetOWner(result.data.Result); // Update the state with the array of vaccination types
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/auth/vaccinations`)
-      .then((result) => {
-        console.log(result.data.Result);
-        if (result.data.Status) {
-          setVaccination(result.data.Result); // Update the state with the array of vaccination types
         } else {
           alert(result.data.Error);
         }
@@ -78,10 +53,48 @@ const Pet = () => {
     return <div>Loading...</div>;
   }
 
+  // Dynamically selecting image based on pet_type
+  let imageSrc;
+  switch (pet.pet_type) {
+    case "Cat":
+      imageSrc = CatImage;
+      break;
+    case "Dog":
+      imageSrc = DogImage;
+      break;
+    case "Rabbit":
+      imageSrc = RabbitImage;
+      break;
+    case "Horse":
+      imageSrc = HorseImage;
+      break;
+    default:
+      // Default image if pet_type is not recognized
+      imageSrc = DefaultImage; // You can set any default image here
+      break;
+  }
+
+  // Calculate expiration date
+  const vaccinationDate = new Date(pet.pet_vaccination_date);
+  const expirationDate = new Date(
+    vaccinationDate.getFullYear() + pet.vaccination_validity,
+    vaccinationDate.getMonth(),
+    vaccinationDate.getDate()
+  );
+
+  // Calculate the difference in days between expiration date and today
+  const today = new Date();
+  const differenceInTime = expirationDate.getTime() - today.getTime();
+  const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+
+  // Calculate years and remaining days
+  const years = Math.floor(differenceInDays / 365);
+  const remainingDays = differenceInDays % 365;
+
   return (
     <div>
       <h2>
-        Pet Details - {pet.pet_type} {pet.pet_nickname}
+        Pet Details - {pet.pet_type} {pet.pet_name}
       </h2>
       <MDBContainer>
         <MDBRow className="justify-content-center">
@@ -92,45 +105,18 @@ const Pet = () => {
                   <div className="justify-content-center align-content-center m-2">
                     <div className="col-12 d-flex justify-content-between align-items-center">
                       <label htmlFor="category" className="form-label">
-                        <strong>Pet Owner</strong>
+                        <strong>Pet Owner: {pet.owner_name}</strong>
                       </label>
-                      <select
-                        name="petOwner"
-                        id="petowner"
-                        className="transparent-select"
-                        value={pet.pet_owner}
-                        disabled
-                      >
-                        {petOwner.map((petO) => {
-                          return (
-                            <option
-                              key={petO.pet_owner_id}
-                              value={petO.pet_owner_id}
-                            >
-                              {petO.pet_owner_name} {petO.pet_owner_surname}
-                            </option>
-                          );
-                        })}
-                      </select>
                     </div>
-                    <MDBCardImage
-                      style={{
-                        width: "480px",
-                        borderRadius: "10px",
-                        textAlign: "center",
-                      }}
-                      src={`http://localhost:3000/images/` + pet.image}
-                      alt={pet.pet_nickname}
-                      fluid
-                    />
                   </div>
+                  <MDBCardImage src={imageSrc} fluid alt="..." />
                   <div className="flex-grow-1 m-4">
                     <div className="col-12 d-flex justify-content-between align-items-center">
-                      <MDBCardTitle>{pet.pet_nickname}</MDBCardTitle>
+                      <MDBCardTitle>{pet.pet_name}</MDBCardTitle>
                       <MDBCardText>{pet.pet_type}</MDBCardText>
                     </div>
                     <MDBCardText>
-                      <strong>ChipNB:</strong> {pet.pet_nb_chip}
+                      <strong>ChipNB:</strong> {pet.pet_chip_number}
                     </MDBCardText>
                     <MDBCardText>
                       <strong>Breed:</strong> {pet.pet_breed}
@@ -155,41 +141,22 @@ const Pet = () => {
                     </div>
                     <MDBCardText>
                       <strong>Date of Birth:</strong>{" "}
-                      {formatDate(pet.pet_birth_date)}
+                      {formatDate(pet.pet_birthdate)}
                     </MDBCardText>
                     <MDBCardText>
-                      <strong>Vaccinated:</strong> {pet.pet_vaccinated}
+                      <strong>Main Vet:</strong> {pet.veterinarian_name}
                     </MDBCardText>
-                    <div className="col-12">
-                      <label htmlFor="category" className="form-label">
-                        <strong>Type of vaccine</strong>
-                      </label>
-                      <select
-                        name="VacType"
-                        id="vactype"
-                        className="form-select"
-                        value={pet.pet_vaccination_id}
-                        disabled
-                      >
-                        {vaccination.map((vac) => {
-                          return (
-                            <option
-                              key={vac.vaccination_type_id}
-                              value={vac.vaccination_type_id}
-                            >
-                              {vac.vaccination_type_name}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
+                    <MDBCardText>
+                      <strong>Vaccination Name:</strong> {pet.vaccination_name}
+                    </MDBCardText>
                     <MDBCardText>
                       <strong>Vaccination Date:</strong>{" "}
                       {formatDate(pet.pet_vaccination_date)}
                     </MDBCardText>
                     <MDBCardText>
-                      <strong>Vaccine Expiration:</strong>{" "}
-                      {formatDate(pet.pet_vaccination_validity)}
+                      <strong>Vaccination Expiration:</strong>{" "}
+                      {years > 0 ? `${years} years` : ""}
+                      {remainingDays > 0 ? ` ${remainingDays} days` : ""}
                     </MDBCardText>
                     <div className="d-flex justify-content-center pt-1">
                       <button
