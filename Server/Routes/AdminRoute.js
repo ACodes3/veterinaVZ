@@ -194,7 +194,7 @@ router.delete("/delete-veterinarian/:id", (req, res) => {
 //PETS ROUTES
 
 router.post("/add-pet", (req, res) => {
-    const sql = "INSERT INTO pets (pet_name, pet_chip_number, pet_type, pet_breed, pet_gender, pet_birthdate, pet_height, owner_id, vaccination_id, veterinarian_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO pets (pet_name, pet_chip_number, pet_type, pet_breed, pet_gender, pet_birthdate, pet_height, pet_weight, owner_id, vaccination_id, veterinarian_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
         req.body.pet_name,
         req.body.pet_chip_number,
@@ -235,22 +235,22 @@ router.put("/edit-pet/:id", (req, res) => {
     const id = req.params.id;
     const sql = `UPDATE pets set pet_nickname = ?, pet_nb_chip = ?, pet_type = ?, pet_breed = ?, pet_gender = ?, pet_birth_date = ?, pet_height = ?, pet_weight = ?, pet_vaccinated = ? Where id = ?`
     const values = [
-        req.body.pet_nickname,
-        req.body.pet_nb_chip,
+        req.body.pet_name,
+        req.body.pet_chip_number,
         req.body.pet_type,
         req.body.pet_breed,
         req.body.pet_gender,
-        req.body.pet_birth_date,
+        req.body.pet_birthdate,
         req.body.pet_height,
         req.body.pet_weight,
-        req.body.pet_vaccinated,
-        req.body.vet_id,
-        req.body.pet_vaccination_id,
-        req.file.filename,
+        req.body.owner_id,
+        req.body.vaccination_id,
+        req.body.veterinarian_id,
+        id,
     ]
-    con.query(sql, [...values, id], (err, result) => {
-        if (err) return res.json({ Status: false, Error: "Query Error" })
-        return res.json({ Status: true, Result: result })
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true })
     })
 })
 

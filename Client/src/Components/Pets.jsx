@@ -8,7 +8,6 @@ import { MdPets } from "react-icons/md";
 const Pets = () => {
   const navigate = useNavigate();
   const [pet, setPet] = useState([]);
-  const [owner, setOwner] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:3000/auth/pets")
@@ -42,7 +41,7 @@ const Pets = () => {
     navigate('/dashboard/add-pet');
 };
   const handleAddPetOwner = () => {
-    navigate('/dashboard/add-pet-owner');
+    navigate('/dashboard/add-pet-owners');
   };
 
   return (
@@ -105,8 +104,8 @@ const Pets = () => {
             <tbody>
               {pet.map((pets) => (
                 <tr
-                  key={pets.id}
-                  onClick={() => navigate(`/dashboard/pet/${pets.id}`)}
+                  key={pets.pet_id}
+                  onClick={() => navigate(`/dashboard/pet/${pets.pet_id}`)}
                 >
                   <td>{pets.pet_name}</td>
                   <td>{pets.pet_chip_number}</td>
@@ -116,7 +115,7 @@ const Pets = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/dashboard/edit-pet/${pets.id}`);
+                        navigate(`/dashboard/edit-pet/${pets.pet_id}`);
                       }}
                       className="btn btn-success btn-sm me-2"
                     >
@@ -125,7 +124,7 @@ const Pets = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDelete(pets.id);
+                        handleDelete(pets.pet_id);
                       }}
                       className="btn btn-danger btn-sm"
                     >
