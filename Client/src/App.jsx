@@ -23,6 +23,8 @@ import AddPetOwners from './Components/AddPetOwners';
 import EditPetOwner from './Components/EditPetOwner';
 import AddVaccination from './Components/Vaccinations/AddVaccination';
 import EditVaccination from './Components/Vaccinations/EditVaccination';
+import Owner from './Components/Owner';
+import OwnerPets from './Components/OwnerPets';
 
 function App() {
 
@@ -43,6 +45,8 @@ function App() {
           <Route path='/dashboard/edit-veterinarian/:id' element={<EditVeterinarian/>}></Route>
           {/*Pet Owners routes */}
           <Route path='/dashboard/pet-owners' element={<PetOwners/>}></Route>
+          <Route path='/dashboard/pet-owner/:id' element={<Owner/>}></Route>
+          <Route path='/dashboard/pet-owner-pets/:id' element={<OwnerPets/>}></Route>
           <Route path='/dashboard/add-pet-owners' element={<AddPetOwners/>}></Route>
           <Route path='/dashboard/edit-pet-owner/:id' element={<EditPetOwner/>}></Route>
           {/*Pets routes */}

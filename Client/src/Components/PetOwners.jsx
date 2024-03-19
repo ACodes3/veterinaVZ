@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaPersonCircleXmark } from "react-icons/fa6";
 
 const PetOwners = () => {
+  const navigate = useNavigate();
   const [owner, setOwner] = useState([]);
 
   useEffect(() => {
@@ -68,7 +69,10 @@ const PetOwners = () => {
             </thead>
             <tbody>
               {owner.map((own) => (
-                <tr key={own.owner_id}>
+                <tr key={own.owner_id}
+                  onClick={() => navigate(`/dashboard/pet-owner/${own.owner_id}`)}
+                  style={{ cursor: 'pointer' }}
+                  >
                   <td>{own.owner_name}</td>
                   <td>{own.owner_email}</td>
                   <td>{own.owner_emso}</td>
