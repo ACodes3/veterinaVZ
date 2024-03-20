@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaCircle } from "react-icons/fa";
-import DateRangePicker from "./DatePicker/DateRangePicker";
 import { FaCalendarAlt } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Home = () => {
   const [adminTotal, setAdminTotal] = useState();
@@ -14,7 +15,9 @@ const Home = () => {
   const [petsTotal, setPetsTotal] = useState();
   const [admins, setAdmins] = useState([]);
   const [events, setEvents] = useState([]);
-  const totalCost = events.reduce((acc, event) => acc + event.service_price, 0);
+  const [totalCost, setTotalCost] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
     adminCount();
@@ -22,6 +25,7 @@ const Home = () => {
     AdminRecords();
     petOwnersCount();
     petsCount();
+    fetchAppointments();
   }, []);
 
   const AdminRecords = () => {
@@ -78,11 +82,10 @@ const Home = () => {
       });
   };
 
-  useEffect(() => {
+  const fetchAppointments = () => {
     axios
       .get("http://localhost:3000/auth/appointments-combined")
       .then((result) => {
-        console.log(result.data); // Log the data received from the API
         if (result.data.status) {
           setEvents(result.data.result);
         } else {
@@ -90,8 +93,33 @@ const Home = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
-  
+  };
+
+  useEffect(() => {
+    // Calculate total cost when events or selected dates change
+    const filteredAppointments = events.filter((event) =>
+      moment(event.appoitments_starts_at).isBetween(
+        moment(startDate).startOf("day"),
+        moment(endDate).endOf("day"),
+        undefined,
+        "[]"
+      )
+    );
+    const cost = filteredAppointments.reduce(
+      (acc, event) => acc + event.service_price,
+      0
+    );
+    setTotalCost(cost);
+  }, [events, startDate, endDate]);
+
+  const filteredAppointments = events.filter((event) =>
+    moment(event.appoitments_starts_at).isBetween(
+      moment(startDate).startOf("day"),
+      moment(endDate).endOf("day"),
+      undefined,
+      "[]"
+    )
+  );
 
   return (
     <div>
@@ -142,7 +170,28 @@ const Home = () => {
         <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
           <h3>Appointments</h3>
           <div className="d-flex align-items-center">
-            <DateRangePicker />
+            <div className="display-flex align-items-center">
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                dateFormat="dd-MM-yyyy"
+                style={{ width: '150px' }}
+              />
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                dateFormat="dd-MM-yyyy"
+                className="mx-3"
+                style={{ width: '150px' }}
+              />
+            </div>
             <Link to="/dashboard/preview-appointment" className="btn btn-light">
               Calendar
             </Link>
@@ -168,8 +217,8 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              {events.length > 0 ? (
-                events.map((event) => (
+              {filteredAppointments.length > 0 ? (
+                filteredAppointments.map((event) => (
                   <tr key={event.appointments_id}>
                     <td>
                       {moment(event.appoitments_starts_at).format("DD-MM-YYYY")}
@@ -188,6 +237,7 @@ const Home = () => {
                     <FaCalendarAlt /> No appointments found for the selected
                     date range.
                   </td>
+                  <td></td>
                 </tr>
               )}
               <tr>
