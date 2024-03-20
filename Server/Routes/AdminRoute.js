@@ -498,6 +498,15 @@ router.delete("/delete-appointment/:id", (req, res) => {
     })
 })
 
+//SERVICES ROUTES
+router.get("/services", (req, res) => {
+    const sql = "SELECT * from services";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
 //COMBINED TABLE WITH THE PETS AND OWNERS
 
 router.get('/pets-and-owner', (req, res) => {
