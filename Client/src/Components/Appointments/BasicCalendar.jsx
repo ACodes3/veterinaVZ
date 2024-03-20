@@ -1,32 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment";
 import Calendar from "./Calendar";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
-const events = [
-    {
-      start: moment("2024-03-18T10:00:00").toDate(),
-      end: moment("2024-03-18T11:00:00").toDate(),
-      title: "MRI Registration",
-      pet: "Zozo1",
-      vet: "Doctor1",
-    },
-    {
-      start: moment("2024-03-18T14:00:00").toDate(),
-      end: moment("2024-03-18T15:30:00").toDate(),
-      title: "ENT Appointment",
-      pet: "Zozo2",
-      vet: "Doctor2",
-    },
-  ];
+import axios from "axios";
 
 const BasicCalendar = () => {
   const [show, setShow] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [events, setEvents] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/auth/appointments-combined")
+      .then((result) => {
+        console.log(result.data); // Log the data received from the API
+        if (result.data.status) {
+          setEvents(result.data.result);
+        } else {
+          alert(result.data.error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleEventClick = event => {
     setSelectedEvent(event);
@@ -36,7 +35,14 @@ const BasicCalendar = () => {
   return (
     <>
       <Calendar
-        events={events}
+        events={events.map(event => ({
+          start: moment(event.appoitments_starts_at).toDate(),
+          end: moment(event.appointments_ends_at).toDate(),
+          title: event.service_name,
+          pet: event.pet_name,
+          owner: event.owner_name,
+          vet: event.veterinarian_name,
+        }))}
         startAccessor="start"
         endAccessor="end"
         onSelectEvent={handleEventClick}
@@ -48,9 +54,9 @@ const BasicCalendar = () => {
         <Modal.Body>
           {selectedEvent ? (
             <>
-              <p>Start Time: {moment(selectedEvent.start).format("LLL")}</p>
-              <p>End Time: {moment(selectedEvent.end).format("LLL")}</p>
-              <p>Who: {selectedEvent.pet}</p>
+              <p>Time: {moment(selectedEvent.start).format("LLL")} - {moment(selectedEvent.end).format("LT")} </p>
+              <p>Pet: {selectedEvent.pet}</p>
+              <p>Owner: {selectedEvent.owner}</p>
               <p>Vet: {selectedEvent.vet}</p>
             </>
           ) : (
@@ -58,7 +64,7 @@ const BasicCalendar = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-        <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleClose}>
             Edit
           </Button>
           <Button variant="light" onClick={handleClose}>
@@ -70,4 +76,4 @@ const BasicCalendar = () => {
   );
 };
 
-export default BasicCalendar
+export default BasicCalendar;

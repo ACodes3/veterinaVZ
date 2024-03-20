@@ -490,6 +490,33 @@ router.get('/pets-combined/:pet_id', (req, res) => {
     });
 });
 
+//JOINED APPOINTMENTS TABLE
+router.get('/appointments-combined', (req, res) => {
+    const sql = `
+                SELECT 
+                a.*,
+                s.*,
+                p.pet_name,
+                v.veterinarian_name,
+                o.owner_name
+            FROM 
+                appointments a
+            INNER JOIN 
+                services s ON a.service_id = s.service_id
+            INNER JOIN 
+                pets p ON a.pet_id = p.pet_id
+            INNER JOIN 
+                veterinarians v ON a.veterinarian_id = v.veterinarian_id
+            INNER JOIN 
+                owners o ON a.owner_id = o.owner_id;`;
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.error("Query Error:", err); // Log the error for debugging
+            return res.json({ status: false, error: "Query Error" });
+        }
+        return res.json({ status: true, result: result });
+    });
+});
 
 router.get("/logout", (req, res) => {
     res.clearCookie("token")
