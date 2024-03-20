@@ -125,18 +125,6 @@ const Home = () => {
       </div>
       <hr className="mx-4" />
       <div>
-        <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
-          <h3>Vaccinations</h3>
-          <div className="d-flex align-items-center">
-            <DateRangePicker />
-            <Link to="/dashboard/preview-vaccination-appointments" className="btn btn-light">
-              Calendar
-            </Link>
-            <Link to="/dashboard/add-appointment" className="btn btn-success m-3">
-              Book an appointment
-            </Link>
-          </div>
-        </div>
         <div className="px-5">
           <table className="table">
             <thead>
