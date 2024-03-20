@@ -444,6 +444,60 @@ router.delete("/delete-admin/:id", (req, res) => {
     })
 })
 
+//APPOINTMENTS TABLE ROUTES
+router.get("/appointments", (req, res) => {
+    const sql = "SELECT * from appointments";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.get("/appointment/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM appointments WHERE appointments_id = ?";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.post("/add-appointment", (req, res) => {
+    const sql = "INSERT INTO appointments (appointments_created_at, appoitments_starts_at, appointments_ends_at, owner_id, veterinarian_id, pet_id, service_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+        req.body.appointments_created_at,
+        req.body.appoitments_starts_at,
+        req.body.appointments_ends_at,
+        req.body.owner_id,
+        req.body.veterinarian_id,
+        req.body.pet_id,
+        req.body.service_id,
+    ];
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true })
+    })
+});
+
+router.put("/edit-appointment/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE appointments SET appoitments_starts_at = ?, appointments_ends_at = ?, owner_id = ?, veterinarian_id = ?, pet_id = ?, service_id = ?   WHERE appointments_id = ?`;
+    const values = [req.body.email, req.body.password, id];
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.delete("/delete-appointment/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM admin where appointments_id = ?"
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
 //COMBINED TABLE WITH THE PETS AND OWNERS
 
 router.get('/pets-and-owner', (req, res) => {

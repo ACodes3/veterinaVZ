@@ -1,10 +1,10 @@
 import React from 'react'
-import BasicCalendar from "../Appointments/BasicCalendar";
+import BasicBookAppointmentCalendar from './BasicBookAppointmentCalendar';
 
 const BookAppointments = () => {
   return (
     <div>
-        Book Appointments
+        <BasicBookAppointmentCalendar/>
     </div>
   )
 }

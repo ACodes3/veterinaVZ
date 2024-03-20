@@ -25,6 +25,7 @@ import AddVaccination from './Components/Vaccinations/AddVaccination';
 import EditVaccination from './Components/Vaccinations/EditVaccination';
 import Owner from './Components/Owner';
 import OwnerPets from './Components/OwnerPets';
+import BookAppointments from './Components/BookAppointments/BookAppointments';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
           <Route path='/dashboard/profile' element={<Profile/>}></Route>
           {/*Appointments routes */}
           <Route path='/dashboard/preview-appointment' element={<Appointments/>}></Route>
+          <Route path='/dashboard/add-appointment' element={<BookAppointments/>}></Route>
           <Route path='/dashboard/preview-vaccination-appointments' element={<VaccinationAppointments/>}></Route>
           {/*Veterinarian routes */}
           <Route path='/dashboard/veterinarians' element={<Veterinarians/>}></Route>
