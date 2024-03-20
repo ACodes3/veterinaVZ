@@ -125,19 +125,6 @@ const Home = () => {
       </div>
       <hr className="mx-4" />
       <div>
-        <div className="px-5">
-          <table className="table">
-            <thead>
-            </thead>
-            <tbody>
-              <tr>
-                <td> <FaCalendarAlt /> No appointments selected. Please select a date.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div>
         <div className="mt-4 px-5 pt-3 d-flex align-items-center justify-content-between">
           <h3>Appointments</h3>
           <div className="d-flex align-items-center">
