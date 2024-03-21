@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
 const SearchBar = () => {
-  const navigate = useNavigate();
   const [myOptions, setMyOptions] = useState([]);
 
   const getDataFromAPI = () => {
