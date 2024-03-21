@@ -37,7 +37,9 @@ const PetOwners = () => {
     <div className="px-5 my-4 mx-3">
       <div className="d-flex justify-content-between align-items-center">
         <h3>Pet - Owners List</h3>
-        <SearchBar />
+        <div>
+          <SearchBar />
+        </div>
         <Link to="/dashboard/add-pet-owners" className="btn btn-success">
           Add Pet Owner
         </Link>
