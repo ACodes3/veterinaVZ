@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaPersonCircleXmark } from "react-icons/fa6";
+import SearchBar from "./SearchBar/SearchBar";
 
 const PetOwners = () => {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ const PetOwners = () => {
     <div className="px-5 my-4 mx-3">
       <div className="d-flex justify-content-between align-items-center">
         <h3>Pet - Owners List</h3>
+        <SearchBar />
         <Link to="/dashboard/add-pet-owners" className="btn btn-success">
           Add Pet Owner
         </Link>
@@ -69,10 +71,13 @@ const PetOwners = () => {
             </thead>
             <tbody>
               {owner.map((own) => (
-                <tr key={own.owner_id}
-                  onClick={() => navigate(`/dashboard/pet-owner/${own.owner_id}`)}
-                  style={{ cursor: 'pointer' }}
-                  >
+                <tr
+                  key={own.owner_id}
+                  onClick={() =>
+                    navigate(`/dashboard/pet-owner/${own.owner_id}`)
+                  }
+                  style={{ cursor: "pointer" }}
+                >
                   <td>{own.owner_name}</td>
                   <td>{own.owner_email}</td>
                   <td>{own.owner_emso}</td>
