@@ -75,9 +75,10 @@ const PetOwners = () => {
               {owner.map((own) => (
                 <tr
                   key={own.owner_id}
-                  onClick={() =>
+                  onClick={(event) =>{
+                    event.stopPropagation();
                     navigate(`/dashboard/pet-owner/${own.owner_id}`)
-                  }
+                  }}
                   style={{ cursor: "pointer" }}
                 >
                   <td>{own.owner_name}</td>
@@ -93,7 +94,9 @@ const PetOwners = () => {
                     </Link>
                     <button
                       className="btn btn-danger btn-sm"
-                      onClick={() => handleDeleteOwner(own.owner_id)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleDeleteOwner(own.owner_id)}}
                     >
                       Delete
                     </button>
