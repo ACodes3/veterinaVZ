@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { adminRouter } from "./Routes/AdminRoute.js";
 import cookieParser from "cookie-parser";
+import { OwnerRouter } from "./Routes/OwnerRoute.js";
 
 
 
@@ -13,6 +14,7 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use("/auth", adminRouter)
+app.use("/owner", OwnerRouter)
 app.use(express.static("Public"))
 app.use(cookieParser())
 

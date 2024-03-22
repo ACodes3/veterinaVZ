@@ -29,6 +29,7 @@ import BookAppointments from './Components/BookAppointments/BookAppointments';
 import PrivateRoute from './Components/PrivateRoute';
 import Start from './Components/Start';
 import OwnerLogin from './Components/PetOwnersRoutes/OwnerLogin';
+import OwnerDetails from './Components/PetOwnersRoutes/OwnerDetails';
 
 function App() {
 
@@ -71,6 +72,8 @@ function App() {
           <Route path='/dashboard/add-vaccinations' element={<AddVaccination/>}></Route>
           <Route path='/dashboard/edit-vaccination/:id' element={<EditVaccination/>}></Route>
         </Route>
+        {/*Owners routes for logged in owners*/}
+        <Route path='/owner-profile/:id' element={<OwnerDetails/>}></Route>
       </Routes>
     </BrowserRouter>
   )
