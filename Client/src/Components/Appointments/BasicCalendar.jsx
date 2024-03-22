@@ -68,7 +68,7 @@ const BasicCalendar = () => {
             Edit
           </Button>
           <Button variant="light" onClick={handleClose}>
-            Close
+            Delete
           </Button>
         </Modal.Footer>
       </Modal>

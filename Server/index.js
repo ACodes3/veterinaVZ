@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { adminRouter } from "./Routes/AdminRoute.js";
+import cookieParser from "cookie-parser";
 
 
 
@@ -13,6 +14,7 @@ app.use(cors({
 app.use(express.json())
 app.use("/auth", adminRouter)
 app.use(express.static("Public"))
+app.use(cookieParser())
 
 app.listen(3000, () => {
     console.log("Server is running")

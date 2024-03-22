@@ -26,14 +26,19 @@ import EditVaccination from './Components/Vaccinations/EditVaccination';
 import Owner from './Components/Owner';
 import OwnerPets from './Components/OwnerPets';
 import BookAppointments from './Components/BookAppointments/BookAppointments';
+import PrivateRoute from './Components/PrivateRoute';
+import Start from './Components/Start';
+import OwnerLogin from './Components/PetOwnersRoutes/OwnerLogin';
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/' element={<Start/>} ></Route>
         <Route path="/admin-login" element={<Login/>}></Route>
-        <Route path="/dashboard" element={<Dashboard/>}>
+        <Route path="/owner-login" element={<OwnerLogin/>}></Route>
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}>
           <Route path='' element={<Home/>}></Route>
           {/*Profile routes */}
           <Route path='/dashboard/profile' element={<Profile/>}></Route>
