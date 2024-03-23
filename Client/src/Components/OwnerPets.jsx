@@ -80,7 +80,7 @@ const OwnerPets = () => {
                     </MDBCard>
                   </MDBCol>
                 ))}
-              </MDBRow>;
+              </MDBRow>
           </MDBContainer>
         </div>
       </div>
