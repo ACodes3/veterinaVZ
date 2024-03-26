@@ -25,4 +25,4 @@ This project represents the development of a Veterinary Management System (VMS) 
 - User Interface: React, CSS, JavaScript, Bootstrap.
 - Data Security: Authentication implemented using passwords or other methods, with user permissions assigned based on roles (veterinarian, pet owner, administrator).
 
-## This Project is made for Database Design & Development Subject at Academia VSS teached by teacher S. Zorman.
+## This Project is made for Database Design & Development Subject teached by teacher S. Zorman.
