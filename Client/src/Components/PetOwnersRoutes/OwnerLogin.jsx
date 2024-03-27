@@ -17,7 +17,6 @@ const OwnerLogin = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (value.owner_email.trim() === "" || value.owner_password.trim() === "") {
-      // If email or password is empty, do not proceed with login
       return;
     }
     axios
@@ -25,7 +24,7 @@ const OwnerLogin = () => {
       .then((result) => {
         if (result.data.loginStatus) {
           localStorage.setItem("valid", true);
-          navigate("/owner-profile" + result.date.owner_id);
+          navigate("/owner-profile/" + result.data.id);
         } else {
           setError(result.data.Error);
         }
