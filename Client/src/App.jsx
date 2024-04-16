@@ -30,6 +30,7 @@ import PrivateRoute from './Components/PrivateRoute';
 import Start from './Components/Start';
 import OwnerLogin from './Components/PetOwnersRoutes/OwnerLogin';
 import OwnerDetails from './Components/PetOwnersRoutes/OwnerDetails';
+import ViewPets from './Components/PetOwnersRoutes/ViewPets';
 
 function App() {
 
@@ -74,6 +75,7 @@ function App() {
         </Route>
         {/*Owners routes for logged in owners*/}
         <Route path='/owner-profile/:id' element={<OwnerDetails/>}></Route>
+        <Route path='/owner-profile-pets/:id' element={<ViewPets/>}></Route>
       </Routes>
     </BrowserRouter>
   )
