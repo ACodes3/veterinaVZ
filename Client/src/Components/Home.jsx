@@ -18,8 +18,16 @@ const Home = () => {
   const [totalCost, setTotalCost] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [role, setRole] = useState(""); // State to store user role
 
   useEffect(() => {
+    // Fetch user role from token
+    const token = getCookie("token");
+    if (token) {
+      const decodedToken = decodeJWT(token);
+      setRole(decodedToken.role);
+    }
+
     adminCount();
     veterinariansCount();
     AdminRecords();
@@ -27,6 +35,26 @@ const Home = () => {
     petsCount();
     fetchAppointments();
   }, []);
+
+  // Function to get cookie value by name
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+
+  // Function to decode JWT token manually
+  const decodeJWT = (token) => {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  };
 
   const AdminRecords = () => {
     axios.get("http://localhost:3000/auth/admin-records").then((result) => {
@@ -178,7 +206,7 @@ const Home = () => {
                 startDate={startDate}
                 endDate={endDate}
                 dateFormat="dd-MM-yyyy"
-                style={{ width: '150px' }}
+                style={{ width: "150px" }}
               />
               <DatePicker
                 selected={endDate}
@@ -189,7 +217,7 @@ const Home = () => {
                 minDate={startDate}
                 dateFormat="dd-MM-yyyy"
                 className="mx-3"
-                style={{ width: '150px' }}
+                style={{ width: "150px" }}
               />
             </div>
             <Link to="/dashboard/preview-appointment" className="btn btn-light">
@@ -256,9 +284,11 @@ const Home = () => {
       <div className="my-4 px-5 pt-3">
         <div className="d-flex justify-content-between align-items-center">
           <h3>List of Admins</h3>
-          <Link to="/dashboard/add-admin" className="btn btn-success m-3">
-            Add Admin
-          </Link>
+          {role === "admin" && (
+            <Link to="/dashboard/add-admin" className="btn btn-success m-3">
+              Add Admin
+            </Link>
+          )}
         </div>
         <div className="mt-3">
           {admins.length === 0 ? (
@@ -293,18 +323,22 @@ const Home = () => {
                       <FaCircle color="green" /> Available
                     </td>
                     <td>
-                      <Link
-                        to={`/dashboard/edit-admin/` + admin.id}
-                        className="btn btn-success btn-sm me-2"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleDeleteAdmin(admin.id)}
-                      >
-                        Delete
-                      </button>
+                      {role === "admin" && ( // Conditionally render buttons based on role
+                        <>
+                          <Link
+                            to={`/dashboard/edit-admin/` + admin.id}
+                            className="btn btn-success btn-sm me-2"
+                          >
+                            Edit
+                          </Link>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleDeleteAdmin(admin.id)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}
