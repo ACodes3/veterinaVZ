@@ -9,6 +9,7 @@ const router = express.Router()
 
 //LOGIN ROUTES
 
+//ADMIN LOGIN
 router.post("/admin-login", (req, res) => {
     const sql = "SELECT * from admin Where email = ? and password = ?"
     con.query(sql, [req.body.email, req.body.password], (err, result) => {
@@ -18,6 +19,20 @@ router.post("/admin-login", (req, res) => {
             const token = jwt.sign({ role: "admin", email: email }, "jwt_secret_key", { expiresIn: "1d" })
             res.cookie("token", token)
             return res.json({ loginStatus: true })
+        } else return res.json({ loginStatus: false, Error: "Wrong email or password" })
+    })
+})
+
+//VET LOGIN
+router.post("/veterinarian-login", (req, res) => {
+    const sql = "SELECT * from veterinarians Where veterinarian_email = ? and veterinarian_password = ?"
+    con.query(sql, [req.body.veterinarian_email, req.body.veterinarian_password], (err, result) => {
+        if (err) return res.json({ loginStatus: false, Error: "Query error" })
+        if (result.length > 0) {
+            const email = result[0].veterinarian_email;
+            const token = jwt.sign({ role: "veterinarian", email: email }, "jwt_secret_key", { expiresIn: "1d" })
+            res.cookie("token", token)
+            return res.json({ loginStatus: true, id:result[0].owner_id })
         } else return res.json({ loginStatus: false, Error: "Wrong email or password" })
     })
 })
@@ -580,20 +595,6 @@ router.get('/appointments-combined', (req, res) => {
         return res.json({ status: true, result: result });
     });
 });
-
-//VET LOGIN
-router.post("/veterinarian-login", (req, res) => {
-    const sql = "SELECT * from veterinarians Where veterinarian_email = ? and veterinarian_password = ?"
-    con.query(sql, [req.body.veterinarian_email, req.body.veterinarian_password], (err, result) => {
-        if (err) return res.json({ loginStatus: false, Error: "Query error" })
-        if (result.length > 0) {
-            const email = result[0].veterinarian_email;
-            const token = jwt.sign({ role: "veterinarian", email: email }, "jwt_secret_key", { expiresIn: "1d" })
-            res.cookie("token", token)
-            return res.json({ loginStatus: true, id:result[0].owner_id })
-        } else return res.json({ loginStatus: false, Error: "Wrong email or password" })
-    })
-})
 
 router.get("/logout", (req, res) => {
     res.clearCookie("token")
