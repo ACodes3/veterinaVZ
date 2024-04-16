@@ -19,7 +19,6 @@ const OwnerDetails = () => {
   const navigate = useNavigate();
   const [owner, setOwner] = useState([]);
   const [isEditing, setIsEditing] = useState(false); 
-  axios.defaults.withCredentials = true;
   const handleLogout = () => {
     axios.get("http://localhost:3000/auth/logout").then((result) => {
       if (result.data.Status) {

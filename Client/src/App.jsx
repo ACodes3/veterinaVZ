@@ -31,6 +31,7 @@ import Start from './Components/Start';
 import OwnerLogin from './Components/PetOwnersRoutes/OwnerLogin';
 import OwnerDetails from './Components/PetOwnersRoutes/OwnerDetails';
 import ViewPets from './Components/PetOwnersRoutes/ViewPets';
+import VetLogin from './Components/VetRoutes/VetLogin';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
         <Route path='/' element={<Start/>} ></Route>
         <Route path="/admin-login" element={<Login/>}></Route>
         <Route path="/owner-login" element={<OwnerLogin/>}></Route>
+        <Route path="/veterinarian-login" element={<VetLogin/>}></Route>
         <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}>
           <Route path='' element={<Home/>}></Route>
           {/*Profile routes */}
