@@ -312,7 +312,7 @@ const Home = () => {
                 <tr>
                   <th>Email</th>
                   <th>Availability</th>
-                  <th>Action</th>
+                  {role === "admin" && <th>Action</th>}
                 </tr>
               </thead>
               <tbody>
@@ -322,24 +322,22 @@ const Home = () => {
                     <td>
                       <FaCircle color="green" /> Available
                     </td>
-                    <td>
-                      {role === "admin" && ( // Conditionally render buttons based on role
-                        <>
-                          <Link
-                            to={`/dashboard/edit-admin/` + admin.id}
-                            className="btn btn-success btn-sm me-2"
-                          >
-                            Edit
-                          </Link>
-                          <button
-                            className="btn btn-danger btn-sm"
-                            onClick={() => handleDeleteAdmin(admin.id)}
-                          >
-                            Delete
-                          </button>
-                        </>
-                      )}
-                    </td>
+                    {role === "admin" && (
+                      <td>
+                        <Link
+                          to={`/dashboard/edit-admin/` + admin.id}
+                          className="btn btn-success btn-sm me-2"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleDeleteAdmin(admin.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

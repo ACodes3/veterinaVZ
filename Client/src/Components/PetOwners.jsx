@@ -7,6 +7,7 @@ import SearchBar from "./SearchBar/SearchBar";
 const PetOwners = () => {
   const navigate = useNavigate();
   const [owner, setOwner] = useState([]);
+  const [role, setRole] = useState(""); // State to store user role
 
   useEffect(() => {
     axios
@@ -20,6 +21,35 @@ const PetOwners = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    // Fetch user role from token
+    const token = getCookie("token");
+    if (token) {
+      const decodedToken = decodeJWT(token);
+      setRole(decodedToken.role);
+    }
+  }, []);
+
+  // Function to get cookie value by name
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+
+  // Function to decode JWT token manually
+  const decodeJWT = (token) => {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  };
 
   const handleDeleteOwner = (id) => {
     axios
@@ -40,9 +70,11 @@ const PetOwners = () => {
         <div>
           <SearchBar />
         </div>
-        <Link to="/dashboard/add-pet-owners" className="btn btn-success">
-          Add Pet Owner
-        </Link>
+        {role === "admin" && (
+          <Link to="/dashboard/add-pet-owners" className="btn btn-success">
+            Add Pet Owner
+          </Link>
+        )}
       </div>
       <div className="mt-3">
         {owner.length === 0 ? (
@@ -68,16 +100,16 @@ const PetOwners = () => {
                 <th>Email</th>
                 <th>EMSO</th>
                 <th>Phone</th>
-                <th>Actions</th>
+                {role === "admin" && <th>Actions</th>}
               </tr>
             </thead>
             <tbody>
               {owner.map((own) => (
                 <tr
                   key={own.owner_id}
-                  onClick={(event) =>{
+                  onClick={(event) => {
                     event.stopPropagation();
-                    navigate(`/dashboard/pet-owner/${own.owner_id}`)
+                    navigate(`/dashboard/pet-owner/${own.owner_id}`);
                   }}
                   style={{ cursor: "pointer" }}
                 >
@@ -85,22 +117,25 @@ const PetOwners = () => {
                   <td>{own.owner_email}</td>
                   <td>{own.owner_emso}</td>
                   <td>{own.owner_phone}</td>
-                  <td>
-                    <Link
-                      to={`/dashboard/edit-pet-owner/` + own.owner_id}
-                      className="btn btn-success btn-sm me-2"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleDeleteOwner(own.owner_id)}}
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  {role === "admin" && (
+                    <td>
+                      <Link
+                        to={`/dashboard/edit-pet-owner/` + own.owner_id}
+                        className="btn btn-success btn-sm me-2"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleDeleteOwner(own.owner_id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
